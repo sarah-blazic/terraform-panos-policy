@@ -1,0 +1,10 @@
+[
+  {
+    "name": "localnet",
+    "device_group": "AWS",
+    "type_":"ip-netmask",
+    "value": "192.168.80.0/24",
+    "description": "the 192.168.80 network",
+    "tags": ["internal","dmz"]
+  }
+]
