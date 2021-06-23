@@ -1,7 +1,7 @@
 locals {
   tags_f = jsondecode(file("ex2_tags.json"))
   addr_obj_f = jsondecode(file("ex2_addr_obj.json"))
-  sec_pol_f = jsondecode(file("ex3_sec_policy.json"))
+  sec_pol_f = jsondecode(file("ex1_sec_policy.json"))
 
 }
 
@@ -25,7 +25,7 @@ resource "panos_address_object" "this" {
   tags           = try(each.value.tags, null)
 }
 
-//resource "panos_panorama_security_policy_group" "this" {
+//resource "panos_panorama_security_policy" "this" {
 //  depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
 //
 //  for_each = {for item in local.sec_pol_f: item.device_group => item}
@@ -57,4 +57,24 @@ resource "panos_address_object" "this" {
 //  }
 //}
 
+resource "panos_panorama_security_policy" "this" {
+  for_each = { for policy in local.sec_pol_f : policy.rule.name => policy }
+
+  device_group = try(each.value.device_group, "shared")
+  rulebase = try(each.value.rulebase, "pre-rulebase")
+
+  rule {
+    applications          = lookup(each.value.rule, "applications", ["any"])
+    categories            = lookup(each.value.rule, "categories", ["any"])
+    destination_addresses = lookup(each.value.rule, "destination_addresses", ["any"])
+    destination_zones     = lookup(each.value.rule, "destination_zones", ["any"])
+    hip_profiles          = lookup(each.value.rule, "hip_profiles", ["any"])
+    name                  = each.key
+    services              = lookup(each.value.rule, "services", ["application-default"])
+    source_addresses      = lookup(each.value.rule, "source_addresses", ["any"])
+    source_users          = lookup(each.value.rule, "source_users", ["any"])
+    source_zones          = lookup(each.value.rule, "source_zones", ["any"])
+    description           = lookup(each.value.rule, "description", null)
+  }
+}
 
