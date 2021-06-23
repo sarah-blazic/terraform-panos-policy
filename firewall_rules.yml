@@ -1,0 +1,33 @@
+security_policy_rules:
+  "MOJ AWS GlobalProtect Firewalls":
+    "pre-rulebase":
+      - name                  : "block outbound access to known malicious IPs"
+        tags                  : ["Outbound","Managed by Terraform"]
+        source_zones          : ["any"]
+        source_addresses      : ["any"]
+        negate_source         : false
+        source_users          : ["any"]
+        hip_profiles          : ["any"]
+        destination_zones     : ["Untrust-L3"]
+        destination_addresses : ["panw-known-ip-list"]
+        negate_destination    : false
+        applications          : ["any"]
+        services              : ["any"]
+        categories            : ["any"]
+        action                : "deny"
+        disable_server_response_inspection: false
+        log_setting           : "default"
+        log_start             : false
+        log_end               : true
+        disabled              : false
+        group                 : ""
+        virus                 : ""
+        spyware               : ""
+        vulnerability         : ""
+        url_filtering         : ""
+        file_blocking         : ""
+        wildfire_analysis     : ""
+      - name                  : "block outbound access to high-risk IPs"
+        tags                  : ["Outbound","Managed by Terraform"]
+        source_zones          : ["any"]
+        source_addresses      : ["any"]

@@ -1,12 +1,48 @@
 [
-    {
-      "name": "localnet",
-      "device_group": "AWS",
-      "type":"ip-range",
-      "value": {
-        "ip-range": "192.168.80.0-1.2.3.4"
-      },
-      "description": "the 192.168.80 network",
-      "tags": ["internal","dmz"]
+  {
+    "name": "azure_int_lb_priv_ip",
+    "type": "ip-netmask",
+    "value" : {
+      "ip-netmask":"10.100.4.40/32"
+    },
+    "tags": [
+      "untrust",
+      "internal"
+    ]
+  },
+  {
+    "name": "pa_updates",
+    "type": "fqdn",
+    "value" : {
+      "fqdn":"updates.paloaltonetworks.com"
+    },
+    "device_group": "AWS",
+    "description": "palo alto updates"
+  },
+  {
+    "name": "cloudflare",
+    "type": "ip-netmask",
+    "value" : {
+      "ip-netmask":"1.1.1.1/32"
     }
+  },
+  {
+    "name": "ntp1",
+    "type": "ip-range",
+    "value": {
+      "ip-range":"10.0.0.2-10.0.0.10"
+    }
+  },
+  {
+    "name": "azure_lb_hc_ip",
+    "type": "ip-netmask",
+    "value": {
+      "ip-netmask":"168.63.129.16/32"
+    },
+    "tags": [
+      "external",
+      "untrust"
+    ],
+    "device_group": "AZURE"
+  }
 ]

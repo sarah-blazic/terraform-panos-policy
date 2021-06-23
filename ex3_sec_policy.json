@@ -84,50 +84,5 @@
         "icmp_unreachable": true
       }
     ]
-  },
-  {
-    "rulebase": "post-rulebase",
-    "rules": [
-      {
-        "name": "sarahs3",
-        "source_zones": [
-          "untrust"
-        ],
-        "source_users": [
-          "any"
-        ],
-        "destination_zones": [
-          "dmz"
-        ],
-        "applications": [
-          "ssl",
-          "hotmail"
-        ],
-        "services": [
-          "application-default"
-        ],
-        "categories": [
-          "any"
-        ],
-        "target": [
-          {
-            "serial": "5686706124",
-            "vsys_list": [
-              "vsys1",
-              "vsys2",
-              "vsys3"
-            ]
-          },
-          {
-            "serial": "7065657545",
-            "vsys_list": [
-              "vsys2",
-              "vsys4"
-            ]
-          }
-        ],
-        "icmp_unreachable": true
-      }
-    ]
   }
 ]
