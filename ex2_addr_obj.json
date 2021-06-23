@@ -1,0 +1,12 @@
+[
+    {
+      "name": "localnet",
+      "device_group": "AWS",
+      "type":"ip-range",
+      "value": {
+        "ip-range": "192.168.80.0-1.2.3.4"
+      },
+      "description": "the 192.168.80 network",
+      "tags": ["internal","dmz"]
+    }
+]

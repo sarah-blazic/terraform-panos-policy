@@ -1,6 +1,7 @@
 [
   {
     "rulebase": "pre-rulebase",
+    "device_group": "shared",
     "rules": [
       {
         "name": "sarahs1",
@@ -43,7 +44,7 @@
         "icmp_unreachable": true
       },
       {
-        "name": "sarahs1",
+        "name": "sarahs2",
         "source_zones": [
           "untrust"
         ],
@@ -88,7 +89,7 @@
     "rulebase": "post-rulebase",
     "rules": [
       {
-        "name": "sarahs1",
+        "name": "sarahs3",
         "source_zones": [
           "untrust"
         ],
