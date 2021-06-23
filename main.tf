@@ -1,7 +1,7 @@
 locals {
-  tags_f      = jsondecode(file("./examples/tag_ex/ex2_tags.json"))
-  addr_obj_f  = jsondecode(file("./examples/add_obj_ex/ex1_addr_obj.json"))
-  sec_pol_f   = jsondecode(file("./examples/sec_ex/ex3_sec_policy.json"))
+  tags_f      = jsondecode(file("./ex2_tags.json"))
+  addr_obj_f  = jsondecode(file("./ex1_addr_obj.json"))
+  sec_pol_f   = jsondecode(file("./ex3_sec_policy.json"))
 
 }
 
