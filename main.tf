@@ -17,7 +17,7 @@ resource "panos_panorama_administrative_tag" "this" {
 }
 
 resource "panos_address_object" "this" {
-  for_each = {for obj in local.addr_obj_f: obj.name => obj}
+  for_each = {for obj in local.addr_obj_f : obj.name => obj}
 
   name           = each.key
   value          = lookup(each.value.value, each.value.type)
@@ -137,3 +137,55 @@ resource "panos_panorama_service_object" "this" {
 //    description           = lookup(each.value, "description", null)
 //  }
 //}
+
+resource "panos_panorama_security_policy" "this" {
+  depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
+
+  for_each = {for item in local.sec_pol_f: item.device_group => item}
+
+  device_group = try(each.value.device_group, "shared")
+  rulebase = try(each.value.rulebase, "pre-rulebase")
+  dynamic "rule" {
+    for_each = { for policy in each.value.rules : policy.name => policy }
+    content {
+      applications                       = lookup(rule.value, "applications", ["any"])
+      categories                         = lookup(rule.value, "categories", ["any"])
+      destination_addresses              = lookup(rule.value, "destination_addresses", ["any"])
+      destination_zones                  = lookup(rule.value, "destination_zones", ["any"])
+      hip_profiles                       = lookup(rule.value, "hip_profiles", ["any"])
+      name                               = rule.value.name
+      services                           = lookup(rule.value, "services", ["application-default"])
+      source_addresses                   = lookup(rule.value, "source_addresses", ["any"])
+      source_users                       = lookup(rule.value, "source_users", ["any"])
+      source_zones                       = lookup(rule.value, "source_zones", ["any"])
+      description                        = lookup(rule.value, "description", null)
+      tags                               = lookup(rule.value,"tags", null)
+      type                               = lookup(rule.value, "type", "universal")
+      negate_source                      = lookup(rule.value, "negate_source", false)
+      negate_destination                 = lookup(rule.value, "negate_destination", false)
+      action                             = lookup(rule.value, "action", "allow")
+      log_setting                        = ""
+      log_start                          = ""
+      log_end                            = ""
+      disabled                           = ""
+      schedule                           = ""
+      icmp_unreachable                   = ""
+      disable_server_response_inspection = ""
+      group                              = ""
+      virus                              = ""
+      spyware                            = ""
+      vulnerability                      = ""
+      url_filtering                      = ""
+      file_blocking                      = ""
+      wildfire_analysis                  = ""
+      data_filtering                     = ""
+
+      target {
+        serial = ""
+        vsys_list = []
+      }
+      negate_target = ""
+    }
+
+  }
+}
