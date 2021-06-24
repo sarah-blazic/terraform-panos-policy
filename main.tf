@@ -164,27 +164,30 @@ resource "panos_panorama_security_policy" "this" {
       negate_source                      = lookup(rule.value, "negate_source", false)
       negate_destination                 = lookup(rule.value, "negate_destination", false)
       action                             = lookup(rule.value, "action", "allow")
-      log_setting                        = ""
-      log_start                          = ""
-      log_end                            = ""
-      disabled                           = ""
-      schedule                           = ""
-      icmp_unreachable                   = ""
-      disable_server_response_inspection = ""
-      group                              = ""
-      virus                              = ""
-      spyware                            = ""
-      vulnerability                      = ""
-      url_filtering                      = ""
-      file_blocking                      = ""
-      wildfire_analysis                  = ""
-      data_filtering                     = ""
+      log_setting                        = lookup(rule.value, "log_setting", null)
+      log_start                          = lookup(rule.value, "log_start", false)
+      log_end                            = lookup(rule.value, "log_end", true)
+      disabled                           = lookup(rule.value, "disabled", false)
+      schedule                           = lookup(rule.value, "schedule", null)
+      icmp_unreachable                   = lookup(rule.value, "icmp_unreachable", false)
+      disable_server_response_inspection = lookup(rule.value, "disable_server_response_inspection", false)
+      group                              = lookup(rule.value, "group", null)
+      virus                              = lookup(rule.value, "virus", null)
+      spyware                            = lookup(rule.value, "spyware", null)
+      vulnerability                      = lookup(rule.value, "vulnerability", null)
+      url_filtering                      = lookup(rule.value, "url_filtering", null)
+      file_blocking                      = lookup(rule.value, "file_blocking", null)
+      wildfire_analysis                  = lookup(rule.value, "wildfire_analysis", null)
+      data_filtering                     = lookup(rule.value, "data_filtering", null)
 
-      target {
-        serial = ""
-        vsys_list = []
-      }
-      negate_target = ""
+//      dynamic target {
+//        for_each = { for t in rule.value.target : t.serial => t }
+//        content {
+//          serial = target.value.serial
+//          vsys_list = lookup(target.value, "vsys_list", null)
+//        }
+//      }
+      negate_target = lookup(rule.value, "negate_target", false)
     }
 
   }
