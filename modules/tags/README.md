@@ -1,24 +1,20 @@
-###Requirements
-
+Requirements
 ---
 No requirements.
 
-###Providers
-
+Providers
 ---
 Name | Version
 -----|------
 panos | 1.8.3
 
-###Inputs
-
+Inputs
 ---
 Name | Description | Type | Default | Required
 -----|-----|-----|-----|-----
 tags_file | (optional) Path to JSON file that will supply the proper parameters to create tags.|`string`|`"tags.json"`|no
 
-###Outputs
-
+Outputs
 ---
 Name | Description
 -----|-----
