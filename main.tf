@@ -2,7 +2,7 @@ locals {
 //  tags_f       = jsondecode(file("ex2_tags.json"))
   addr_obj_f   = jsondecode(file("ex2_addr_obj.json"))
   addr_group_f = jsondecode(file("ex1_addr_group.json"))
-  service_f    = jsondecode(file("ex1_services.json"))
+//  service_f    = jsondecode(file("ex1_services.json"))
   sec_pol_f    = jsondecode(file("ex3_sec_policy.json"))
 
 }
@@ -34,20 +34,9 @@ resource "panos_panorama_address_group" "this" {
   tags              = try(each.value.tags, null)
 }
 
-resource "panos_panorama_service_object" "this" {
-  for_each = {for obj in local.service_f: obj.name => obj}
-
-  destination_port             = lookup(each.value, "destination_port")
-  name                         = each.key
-  protocol                     = lookup(each.value, "protocol")
-  device_group                 = try(each.value.device_group, "shared")
-  description                  = try(each.value.description, null)
-  source_port                  = try(each.value.source_port, null)
-  tags                         = try(each.value.tags, null)
-  override_session_timeout     = try(each.value.override_session_timeout, false)
-  override_timeout             = try(each.value.override_timeout, null)
-  override_half_closed_timeout = try(each.value.override_half_closed_timeout, null)
-  override_time_wait_timeout   = try(each.value.override_time_wait_timeout, null)
+module "services_mod" {
+  source = "./modules/services"
+  services_file = var.services_f
 }
 
 resource "panos_panorama_security_policy" "this" {
