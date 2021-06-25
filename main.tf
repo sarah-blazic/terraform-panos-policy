@@ -1,47 +1,53 @@
 locals {
-//  tags_f       = jsondecode(file("ex2_tags.json"))
-  addr_obj_f   = jsondecode(file("ex2_addr_obj.json"))
-  addr_group_f = jsondecode(file("ex1_addr_group.json"))
-//  service_f    = jsondecode(file("ex1_services.json"))
+//  tags_f       = jsondecode(file("tags.json"))
+//  addr_obj_f   = jsondecode(file("addr_obj.json"))
+//  addr_group_f = jsondecode(file("addr_group.json"))
+//  service_f    = jsondecode(file("services.json"))
   sec_pol_f    = jsondecode(file("ex3_sec_policy.json"))
 
 }
 
 module "tags_mod" {
   source = "./modules/tags"
-  tags_file = var.tags_f
+//  tags_file = var.tags_f
 }
 
-resource "panos_address_object" "this" {
-  for_each = {for obj in local.addr_obj_f : obj.name => obj}
-
-  name           = each.key
-  value          = lookup(each.value.value, each.value.type)
-  type           = try(each.value.type, "ip-netmask")
-  device_group   = try(each.value.device_group, "shared")
-  description    = try(each.value.description, null)
-  tags           = try(each.value.tags, null)
+module "addr_mod" {
+  source = "./modules/address"
+//  addr_obj_file = var.addr_obj_f
+//  addr_group_file = var.addr_group_f
 }
 
-resource "panos_panorama_address_group" "this" {
-  for_each = {for obj in local.addr_group_f: obj.name => obj}
-
-  name              = each.key
-  device_group      = try(each.value.device_group, "shared")
-  static_addresses  = try(each.value.static_addresses, null)
-  dynamic_match     = try(each.value.dynamic_match, null)
-  description       = try(each.value.description, null)
-  tags              = try(each.value.tags, null)
-}
+//resource "panos_address_object" "this" {
+//  for_each = {for obj in local.addr_obj_f : obj.name => obj}
+//
+//  name           = each.key
+//  value          = lookup(each.value.value, each.value.type)
+//  type           = try(each.value.type, "ip-netmask")
+//  device_group   = try(each.value.device_group, "shared")
+//  description    = try(each.value.description, null)
+//  tags           = try(each.value.tags, null)
+//}
+//
+//resource "panos_panorama_address_group" "this" {
+//  for_each = {for obj in local.addr_group_f: obj.name => obj}
+//
+//  name              = each.key
+//  device_group      = try(each.value.device_group, "shared")
+//  static_addresses  = try(each.value.static_addresses, null)
+//  dynamic_match     = try(each.value.dynamic_match, null)
+//  description       = try(each.value.description, null)
+//  tags              = try(each.value.tags, null)
+//}
 
 module "services_mod" {
   source = "./modules/services"
-  services_file = var.services_f
+//  services_file = var.services_f
 }
 
 resource "panos_panorama_security_policy" "this" {
  // depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
-  depends_on   = [panos_address_object.this, module.tags_mod]
+  depends_on   = [module.addr_mod, module.tags_mod]
 
   for_each = {for item in local.sec_pol_f: "${item.device_group}_${item.rulebase}" => item}
 

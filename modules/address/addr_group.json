@@ -1,0 +1,15 @@
+[
+  {
+    "name": "static ntp grp",
+    "description": "my ntp servers",
+    "static_addresses": [
+      "cloudflare",
+      "google_dns1"
+    ]
+  },
+  {
+    "name": "dynamic ntp grp",
+    "description": "dynamic servers",
+    "dynamic_match": "'trust'or'dmz'"
+  }
+]
