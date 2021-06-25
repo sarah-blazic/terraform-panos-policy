@@ -1,19 +1,15 @@
 locals {
-  tags_f       = jsondecode(file("ex2_tags.json"))
+//  tags_f       = jsondecode(file("ex2_tags.json"))
   addr_obj_f   = jsondecode(file("ex2_addr_obj.json"))
   addr_group_f = jsondecode(file("ex1_addr_group.json"))
   service_f    = jsondecode(file("ex1_services.json"))
-  sec_pol_f    = jsondecode(file("ex1_sec_policy.json"))
+  sec_pol_f    = jsondecode(file("ex3_sec_policy.json"))
 
 }
 
-resource "panos_panorama_administrative_tag" "this" {
-  for_each = {for tag in local.tags_f: tag.name => tag}
-
-  name          = each.key
-  color         = try(each.value.color, null)
-  comment       = try(each.value.comment, null)
-  device_group  = try(each.value.device_group, "shared")
+module "tags_mod" {
+  source = "./modules/tags"
+  tags_file = var.tags_f
 }
 
 resource "panos_address_object" "this" {
@@ -54,94 +50,11 @@ resource "panos_panorama_service_object" "this" {
   override_time_wait_timeout   = try(each.value.override_time_wait_timeout, null)
 }
 
-//resource "panos_panorama_security_policy" "this" {
-//  depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
-//
-//  for_each = {for item in local.sec_pol_f: item.device_group => item}
-//  device_group = try(each.value.device_group, "shared")
-//  rulebase = try(each.value.rulebase, "pre-rulebase")
-
-//  dynamic "rule" {
-////    for_each = { for policy in local.sec_pol_f.rules : policy.name => policy }
-////    for_each = flatten([
-////      for policy, hi in local.sec_pol_f : [
-////        for name, property in hi : [
-////          merge({ "property" = property }, { "name" = name })
-//////          zipmap(
-//////            [name],[property]
-//////          )
-////        ]
-////      ]
-////    ])
-//
-//    content {
-//      applications                       = lookup(rule.value, "applications", ["any"])
-//      categories                         = lookup(rule.value, "categories", ["any"])
-//      destination_addresses              = lookup(rule.value, "destination_addresses", ["any"])
-//      destination_zones                  = lookup(rule.value, "destination_zones", ["any"])
-//      hip_profiles                       = lookup(rule.value, "hip_profiles", ["any"])
-//      name                               = rule.value.name
-//      services                           = lookup(rule.value, "services", ["application-default"])
-//      source_addresses                   = lookup(rule.value, "source_addresses", ["any"])
-//      source_users                       = lookup(rule.value, "source_users", ["any"])
-//      source_zones                       = lookup(rule.value, "source_zones", ["any"])
-//      description                        = lookup(rule.value, "description", null)
-//      tags                               = lookup(rule.value,"tags", null)
-////      type                               = lookup(rule.value, "type", "universal")
-////      negate_source                      = lookup(rule.value, "negate_source", false)
-////      negate_destination                 = lookup(rule.value, "negate_destination", false)
-////      action                             = lookup(rule.value, "action", "allow")
-////      log_setting                        = ""
-////      log_start                          = ""
-////      log_end                            = ""
-////      disabled                           = ""
-////      schedule                           = ""
-////      icmp_unreachable                   = ""
-////      disable_server_response_inspection = ""
-////      group                              = ""
-////      virus                              = ""
-////      spyware                            = ""
-////      vulnerability                      = ""
-////      url_filtering                      = ""
-////      file_blocking                      = ""
-////      wildfire_analysis                  = ""
-////      data_filtering                     = ""
-////
-////      target {
-////        serial = ""
-////        vsys_list = []
-////      }
-////      negate_target = ""
-////    }
-//  }
-//}
-
-
-//resource "panos_panorama_security_policy" "this" {
-//  for_each = { for policy in local.sec_pol_f : policy.rule.name => policy }
-//
-//  device_group = try(each.value.device_group, "shared")
-//  rulebase = try(each.value.rulebase, "pre-rulebase")
-//
-//  rule {
-//    applications          = lookup(each.value, "applications", ["any"])
-//    categories            = lookup(each.value, "categories", ["any"])
-//    destination_addresses = lookup(each.value, "destination_addresses", ["any"])
-//    destination_zones     = lookup(each.value, "destination_zones", ["any"])
-//    hip_profiles          = lookup(each.value, "hip_profiles", ["any"])
-//    name                  = each.key
-//    services              = lookup(each.value, "services", ["application-default"])
-//    source_addresses      = lookup(each.value, "source_addresses", ["any"])
-//    source_users          = lookup(each.value, "source_users", ["any"])
-//    source_zones          = lookup(each.value, "source_zones", ["any"])
-//    description           = lookup(each.value, "description", null)
-//  }
-//}
-
 resource "panos_panorama_security_policy" "this" {
-  depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
+ // depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
+  depends_on   = [panos_address_object.this, module.tags_mod]
 
-  for_each = {for item in local.sec_pol_f: item.device_group => item}
+  for_each = {for item in local.sec_pol_f: "${item.device_group}_${item.rulebase}" => item}
 
   device_group = try(each.value.device_group, "shared")
   rulebase = try(each.value.rulebase, "pre-rulebase")
@@ -169,7 +82,7 @@ resource "panos_panorama_security_policy" "this" {
       log_end                            = lookup(rule.value, "log_end", true)
       disabled                           = lookup(rule.value, "disabled", false)
       schedule                           = lookup(rule.value, "schedule", null)
-      icmp_unreachable                   = lookup(rule.value, "icmp_unreachable", false)
+      icmp_unreachable                   = lookup(rule.value, "icmp_unreachable", null)
       disable_server_response_inspection = lookup(rule.value, "disable_server_response_inspection", false)
       group                              = lookup(rule.value, "group", null)
       virus                              = lookup(rule.value, "virus", null)
@@ -181,7 +94,8 @@ resource "panos_panorama_security_policy" "this" {
       data_filtering                     = lookup(rule.value, "data_filtering", null)
 
 //      dynamic target {
-//        for_each = { for t in rule.value.target : t.serial => t }
+////        for_each = { for t in rule.value.target : t.serial => t }
+//        for_each = { for t in rule.value : t => t }
 //        content {
 //          serial = target.value.serial
 //          vsys_list = lookup(target.value, "vsys_list", null)

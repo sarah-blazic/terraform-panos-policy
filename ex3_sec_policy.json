@@ -26,7 +26,7 @@
         ],
         "target": [
           {
-            "serial": "5686706124",
+            "serial": "1234567890",
             "vsys_list": [
               "vsys1",
               "vsys2",
@@ -34,14 +34,13 @@
             ]
           },
           {
-            "serial": "7065657545",
+            "serial": "1234567899",
             "vsys_list": [
               "vsys2",
               "vsys4"
             ]
           }
-        ],
-        "icmp_unreachable": true
+        ]
       },
       {
         "name": "sarahs2",
@@ -63,25 +62,7 @@
         ],
         "categories": [
           "any"
-        ],
-        "target": [
-          {
-            "serial": "5686706124",
-            "vsys_list": [
-              "vsys1",
-              "vsys2",
-              "vsys3"
-            ]
-          },
-          {
-            "serial": "7065657545",
-            "vsys_list": [
-              "vsys2",
-              "vsys4"
-            ]
-          }
-        ],
-        "icmp_unreachable": true
+        ]
       }
     ]
   }

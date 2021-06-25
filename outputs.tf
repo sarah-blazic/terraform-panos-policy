@@ -24,16 +24,3 @@
 //}
 
 
-// output "look" {
-//   value = flatten([
-//    for dg, rule_bases in yamldecode(file("./firewall_rules.yml")).security_policy_rules : [
-//      for rulebase, rules in rule_bases : [
-//        merge({ "rules" = rules }, { "device_group" = dg }, { "rulebase" = rulebase })
-//      ]
-//    ]
-//  ])
-//   //value = yamldecode(file("./firewall_rules.yml")).security_policy_rules
-// }
-
-
-

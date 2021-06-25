@@ -19,5 +19,9 @@
   {
     "name": "dmz",
     "device_group": "AZURE"
+  },
+  {
+    "name": "hello?",
+    "color": "color16"
   }
 ]
