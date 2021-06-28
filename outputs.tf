@@ -27,7 +27,7 @@
 //output "created_tags" {
 //  value = module.tags_mod.created_tags
 //}
-
-output "created_services" {
-  value = module.services_mod.created_services
-}
+//
+//output "created_services" {
+//  value = module.services_mod.created_services
+//}

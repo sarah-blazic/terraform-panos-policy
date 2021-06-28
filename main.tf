@@ -1,25 +1,29 @@
 locals {
-//  tags_f       = jsondecode(file("tags.json"))
-//  addr_obj_f   = jsondecode(file("addr_obj.json"))
-//  addr_group_f = jsondecode(file("addr_group.json"))
-//  service_f    = jsondecode(file("services.json"))
   sec_pol_f    = jsondecode(file("ex3_sec_policy.json"))
-
 }
 
-module "tags_mod" {
-  source = "./modules/tags"
-//  tags_file = var.tags_f
+//module "tags_mod" {
+//  source = "./modules/tags"
+////  tags_file = var.tags_f
+//}
+
+resource "panos_panorama_administrative_tag" "this" {
+  for_each = {for tag in jsondecode(file("tags.json")): tag.name => tag }
+
+  name          = each.key
+  color         = try(each.value.color, null)
+  comment       = try(each.value.comment, null)
+  device_group  = try(each.value.device_group, "shared")
 }
 
-module "addr_mod" {
-  source = "./modules/address"
-//  addr_obj_file = var.addr_obj_f
-//  addr_group_file = var.addr_group_f
-}
+//module "addr_mod" {
+//  source = "./modules/address"
+////  addr_obj_file = var.addr_obj_f
+////  addr_group_file = var.addr_group_f
+//}
 
 //resource "panos_address_object" "this" {
-//  for_each = {for obj in local.addr_obj_f : obj.name => obj}
+//  for_each = {for obj in jsondecode(file("addr_obj.json")): obj.name => obj}
 //
 //  name           = each.key
 //  value          = lookup(each.value.value, each.value.type)
@@ -30,7 +34,7 @@ module "addr_mod" {
 //}
 //
 //resource "panos_panorama_address_group" "this" {
-//  for_each = {for obj in local.addr_group_f: obj.name => obj}
+//  for_each = {for obj in jsondecode(file("addr_group.json")): obj.name => obj}
 //
 //  name              = each.key
 //  device_group      = try(each.value.device_group, "shared")
@@ -46,8 +50,8 @@ module "services_mod" {
 }
 
 resource "panos_panorama_security_policy" "this" {
- // depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
-  depends_on   = [module.addr_mod, module.tags_mod]
+  depends_on   = [panos_address_object.this, panos_panorama_administrative_tag.this]
+//  depends_on   = [module.addr_mod, module.tags_mod]
 
   for_each = {for item in local.sec_pol_f: "${item.device_group}_${item.rulebase}" => item}
 
@@ -88,16 +92,16 @@ resource "panos_panorama_security_policy" "this" {
       wildfire_analysis                  = lookup(rule.value, "wildfire_analysis", null)
       data_filtering                     = lookup(rule.value, "data_filtering", null)
 
-//      dynamic target {
-////        for_each = { for t in rule.value.target : t.serial => t }
-//        for_each = { for t in rule.value : t => t }
-//        content {
-//          serial = target.value.serial
-//          vsys_list = lookup(target.value, "vsys_list", null)
-//        }
-//      }
+      dynamic target {
+        for_each = lookup(rule.value, "target", null) != null ? { for t in rule.value.target : t.serial => t } : {}
+
+        content {
+          serial = lookup(target.value, "serial", "1234567890")
+          vsys_list = lookup(target.value, "vsys_list", null)
+        }
+      }
       negate_target = lookup(rule.value, "negate_target", false)
     }
-
   }
 }
+
