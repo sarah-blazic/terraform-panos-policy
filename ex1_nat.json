@@ -1,0 +1,95 @@
+[
+  {
+    "device_group": "AWS",
+    "rules": [
+      {
+        "name": "second",
+        "original_packet": {
+          "source_zones": [
+            "trust"
+          ],
+          "destination_zone": "untrust",
+          "destination_interface": "any",
+          "source_addresses": [
+            "any"
+          ],
+          "destination_addresses": [
+            "any"
+          ]
+        },
+        "translated_packet": {
+          "source": "dynamic_ip",
+          "translated_addresses": ["google_dns1", "google_dns2"],
+          "fallback": {
+            "interface_address" : {
+              "interface": "ethernet1/4"
+            }
+          },
+          "destination": "static_translation",
+          "static_translation": {
+            "address": "10.2.3.1",
+            "port": 5678
+          }
+        }
+      },
+      {
+        "name": "third",
+        "original_packet": {
+          "source_zones": [
+            "untrust"
+          ],
+          "destination_zone": "trust",
+          "destination_interface": "any",
+          "source_addresses": [
+            "any"
+          ],
+          "destination_addresses": [
+            "any"
+          ]
+        },
+        "translated_packet": {
+          "source": "static_ip",
+          "static_ip": {
+            "translated_address": "192.168.1.5",
+            "bi_directional": true
+          },
+          "destination": "none"
+        }
+      }
+    ]
+  },
+  {
+    "device_group": "AWS",
+    "position_keyword": "directly before",
+    "position_reference": "second",
+    "rules": [
+      {
+        "name": "first",
+        "original_packet": {
+          "source_zones": [
+            "dmz"
+          ],
+          "destination_zone": "dmz",
+          "destination_interface": "any",
+          "source_addresses": [
+            "any"
+          ],
+          "destination_addresses": [
+            "any"
+          ]
+        },
+        "translated_packet": {
+          "source": "dynamic_ip_and_port",
+          "interface_address": {
+            "interface": "ethernet1/6"
+          },
+          "destination": "dynamic_translation",
+          "dynamic_translation": {
+            "address": "cloudflare",
+            "port": 1234
+          }
+        }
+      }
+    ]
+  }
+]

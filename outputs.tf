@@ -1,26 +1,12 @@
-////#outputs
-//output "rules" {
-////  value = {for _ , policy in local.sec_pol_f.rules : policy.name => policy}
-////  value = local.sec_pol_f
-////  value = flatten([
-////    for k, v in local.sec_pol_f : flatten( {
-////    for rule, rulesin v : {
-////    rules = rules
-////    }
-////    })
-////    ])
-////  value = { for policy in each.value.rules : policy.name => policy }
-////
-////      value = flatten([
-////      for policy, hi in local.sec_pol_f : [
-////        for name, property in hi : [
-////         // merge({ "property" = property }, { "name" = name } ,{"policy" = policy})
-////          zipmap(
-////            [name],[property]
-////          )
-////        ]
-////      ]
-////    ])
+//////#outputs
+//output "translated" {
+//  for_each = {for item in local.nat_f:
+//  "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
+//  => item}
+//
+//   for_each = { for policy in each.value.rules : policy.name => policy }
+//
+//  value = each.value.each.value.translated_packet
 //}
 
 #module outputs

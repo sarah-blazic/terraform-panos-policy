@@ -1,7 +1,5 @@
 [
   {
-    "rulebase": "pre-rulebase",
-    "device_group": "shared",
     "rules": [
       {
         "name": "sarahs1",
@@ -26,24 +24,44 @@
         ],
         "target": [
           {
-            "serial": "1234567890",
-            "vsys_list": [
-              "vsys1",
-              "vsys2",
-              "vsys3"
-            ]
+            "serial": "1234567890"
           },
           {
-            "serial": "1234567899",
-            "vsys_list": [
-              "vsys2",
-              "vsys4"
-            ]
+            "serial": "1234567899"
           }
         ]
       },
       {
         "name": "sarahs2",
+        "source_zones": [
+          "untrust"
+        ],
+        "source_users": [
+          "any"
+        ],
+        "destination_zones": [
+          "dmz"
+        ],
+        "applications": [
+          "ssl",
+          "hotmail"
+        ],
+        "services": [
+          "application-default"
+        ],
+        "categories": [
+          "any"
+        ]
+      }
+    ]
+  },
+  {
+    "device_group": "AWS",
+    "position_keyword": "directly before",
+    "position_reference": "rule2",
+    "rules": [
+      {
+        "name": "sarahs3",
         "source_zones": [
           "untrust"
         ],
