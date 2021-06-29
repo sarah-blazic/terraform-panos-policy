@@ -1,0 +1,12 @@
+---
+- name: internal
+  color: color12
+- name: external
+- name: trust
+  device_group: AWS
+  comment: for trusted resources
+- name: untrust
+  comment: for untrusted resources
+  color: color4
+- name: dmz
+  device_group: AZURE
