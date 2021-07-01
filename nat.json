@@ -14,7 +14,7 @@
           "destination_zone": "untrust",
           "destination_interface": "any",
           "source_addresses": [
-            "any"
+            "google_dns1"
           ],
           "destination_addresses": [
             "any"

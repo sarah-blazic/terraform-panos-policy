@@ -39,9 +39,13 @@ output "created_nat" {
   "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
   => item} : tomap({})
 }
+
 #test for bug fix
 output "target" {
 // value = can(values(panos_panorama_nat_rule_group.this)[*].rule.target) ? values(panos_panorama_nat_rule_group.this)[*].rule.target : [{}]
-  value = [for i in local.target : {for pol in i : pol.name => pol} ]
+  value = {for i in local.target_loop : i.name => i}
 //   value = values(panos_panorama_nat_rule_group.this)[*].rule
+}
+output "target_l" {
+  value = {}
 }
