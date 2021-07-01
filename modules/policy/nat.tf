@@ -1,65 +1,42 @@
-resource "panos_panorama_security_rule_group" "this" {
-  for_each = {for item in jsondecode(file(var.sec_file)):
-  "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
-  => item}
+locals {
+//  target = var.nat_file!= "optional" ? {for item in jsondecode(file(var.nat_file)):
+//    "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}"
+//    => item ...} : tomap({})
+  target = var.nat_file!= "optional" ? flatten([for item in jsondecode(file(var.nat_file)):
+  { for policy in item.rules :  "${try(item.device_group, "shared")}"
+  => policy if can(policy.target) } ]) : tomap([{}])
 
-  device_group       = try(each.value.device_group, "shared")
-  rulebase           = try(each.value.rulebase, "pre-rulebase")
-  position_keyword   = try(each.value.position_keyword, "")
-  position_reference = try(each.value.position_reference, null)
-
-  dynamic "rule" {
-    for_each = { for policy in each.value.rules : policy.name => policy }
-    content {
-      applications                       = lookup(rule.value, "applications", ["any"])
-      categories                         = lookup(rule.value, "categories", ["any"])
-      destination_addresses              = lookup(rule.value, "destination_addresses", ["any"])
-      destination_zones                  = lookup(rule.value, "destination_zones", ["any"])
-      hip_profiles                       = lookup(rule.value, "hip_profiles", ["any"])
-      name                               = rule.value.name
-      services                           = lookup(rule.value, "services", ["application-default"])
-      source_addresses                   = lookup(rule.value, "source_addresses", ["any"])
-      source_users                       = lookup(rule.value, "source_users", ["any"])
-      source_zones                       = lookup(rule.value, "source_zones", ["any"])
-      description                        = lookup(rule.value, "description", null)
-      tags                               = lookup(rule.value,"tags", null)
-      type                               = lookup(rule.value, "type", "universal")
-      negate_source                      = lookup(rule.value, "negate_source", false)
-      negate_destination                 = lookup(rule.value, "negate_destination", false)
-      action                             = lookup(rule.value, "action", "allow")
-      log_setting                        = lookup(rule.value, "log_setting", null)
-      log_start                          = lookup(rule.value, "log_start", false)
-      log_end                            = lookup(rule.value, "log_end", true)
-      disabled                           = lookup(rule.value, "disabled", false)
-      schedule                           = lookup(rule.value, "schedule", null)
-      icmp_unreachable                   = lookup(rule.value, "icmp_unreachable", null)
-      disable_server_response_inspection = lookup(rule.value, "disable_server_response_inspection", false)
-      group                              = lookup(rule.value, "group", null)
-      virus                              = lookup(rule.value, "virus", null)
-      spyware                            = lookup(rule.value, "spyware", null)
-      vulnerability                      = lookup(rule.value, "vulnerability", null)
-      url_filtering                      = lookup(rule.value, "url_filtering", null)
-      file_blocking                      = lookup(rule.value, "file_blocking", null)
-      wildfire_analysis                  = lookup(rule.value, "wildfire_analysis", null)
-      data_filtering                     = lookup(rule.value, "data_filtering", null)
-
-      dynamic target {
-        for_each = lookup(rule.value, "target", null) != null ? { for t in rule.value.target : t.serial => t } : {}
-
-        content {
-          serial    = lookup(target.value, "serial", "1234567890")
-          vsys_list = lookup(target.value, "vsys_list", null)
-        }
-      }
-      negate_target = lookup(rule.value, "negate_target", false)
-    }
-  }
+//  target_loop = { for i in local.target.rules : "i.name" => i ...}
+//  target_loop = flatten([for k, v in local.target : [for obj, val in v : {
+//    rules = val.rules
+//  }]])
 }
 
+#if there is a target in a nat rule
+//resource "panos_panorama_nat_rule" "target" {
+//  depends_on = [panos_panorama_administrative_tag.this, panos_panorama_service_object.this]
+//
+//  #for yaml files change jsondecode => yamldecode
+//  for_each = {for i in local.target.* : "i.name" => i...}
+//
+////  device_group = try(each.value.device_group, "shared")
+////  rulebase = try(each.value.rulebase, "pre-rulebase")
+//
+//  destination_addresses = ["any"]
+//  destination_zone = "trust"
+//  name = each.key
+//  source_addresses = ["any"]
+//  source_zones = ["trust"]
+//}
+
+
 resource "panos_panorama_nat_rule_group" "this" {
-   for_each = {for item in jsondecode(file(var.nat_file)):
+  depends_on = [panos_panorama_administrative_tag.this, panos_panorama_service_object.this]
+
+  #for yaml files change jsondecode => yamldecode
+  for_each = var.nat_file != "optional" ? {for item in jsondecode(file(var.nat_file)):
   "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
-  => item}
+  => item} : tomap({})
 
   device_group = try(each.value.device_group, "shared")
   rulebase = try(each.value.rulebase, "pre-rulebase")
@@ -68,7 +45,9 @@ resource "panos_panorama_nat_rule_group" "this" {
 
 
   dynamic "rule" {
-    for_each = { for policy in each.value.rules : policy.name => policy }
+    #checks if there is a target and won't create the rule if there is one
+    for_each = { for policy in each.value.rules : policy.name => policy if !can(policy.target) }
+//    for_each = { for policy in each.value.rules : policy.name => policy }
 
     content {
       name = rule.value.name
@@ -77,21 +56,34 @@ resource "panos_panorama_nat_rule_group" "this" {
       type        = lookup(rule.value, "type", "ipv4" )
       disabled    = lookup(rule.value, "disabled", false)
 
-      dynamic target {
-        for_each = lookup(rule.value, "target", null) != null ? { for t in rule.value.target : t.serial => t } : {}
+      #bug in the resource, but this would create the target
+//      dynamic target {
+//        for_each = can(rule.value.target) ? { for t in rule.value.target : t.serial => t } : {}
+//
+//        content {
+//          serial    = lookup(target.value, "serial", null)
+//          vsys_list = lookup(target.value, "vsys_list", null)
+//        }
+//      }
 
-        content {
-          serial    = lookup(target.value, "serial", "1234567890")
-          vsys_list = lookup(target.value, "vsys_list", null)
-        }
-      }
+//      dynamic target {
+//        for_each = !can(rule.value.target) ? {} : { for t in rule.value.target : t.serial => t }
+//
+//        content {
+//          serial    = null
+//          vsys_list = null
+//        }
+//      }
+
       negate_target = lookup(rule.value, "negate_target", false)
+
 
       original_packet {
         destination_addresses = lookup(rule.value.original_packet, "destination_addresses", ["any"] )
         destination_zone      = lookup(rule.value.original_packet, "destination_zone", "any" )
         source_addresses      = lookup(rule.value.original_packet, "source_addresses", ["any"] )
         source_zones          = lookup(rule.value.original_packet, "source_zones", ["any"])
+        service               = lookup(rule.value.original_packet, "service", "any" )
       }
 
       translated_packet {
@@ -178,3 +170,4 @@ resource "panos_panorama_nat_rule_group" "this" {
     }
   }
 }
+

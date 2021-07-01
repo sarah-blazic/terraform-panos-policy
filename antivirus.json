@@ -1,0 +1,45 @@
+[
+  {
+    "name": "example1",
+    "description": "my description",
+    "decoders": [
+      {
+        "name": "smtp"
+      },
+      {
+        "name": "smb"
+      },
+      {
+        "name": "ftp",
+        "action": "reset-both"
+      }
+    ],
+    "application_exception": [
+      {
+        "name": "myapp",
+        "application": "hotmail",
+        "action": "alert"
+      }
+    ]
+  },
+  {
+    "name": "example2"
+  },
+  {
+    "name": "example3",
+    "description": "my description",
+    "decoders": [
+      {
+        "name": "ftp",
+        "action": "reset-both"
+      }
+    ],
+    "application_exception": [
+      {
+        "name": "used",
+        "application": "disneyplus",
+        "action": "alert"
+      }
+    ]
+  }
+]

@@ -8,7 +8,6 @@
   },
   {
     "name": "trust",
-    "device_group": "AWS",
     "comment": "for trusted resources"
   },
   {
@@ -17,7 +16,26 @@
     "color": "color4"
   },
   {
-    "name": "dmz",
-    "device_group": "AZURE"
+    "name": "dmz"
+  },
+  {
+    "name": "AWS",
+    "device_group": "AWS",
+    "color": "color8"
+  },
+  {
+    "name": "AZURE",
+    "device_group": "AZURE",
+    "color": "color1"
+  },
+  {
+    "name": "cloudflare",
+    "comment": "has cloudflare address"
+  },
+  {
+    "name": "pa_updates"
+  },
+  {
+    "name": "address_group"
   }
 ]

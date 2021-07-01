@@ -3,10 +3,18 @@
   color: color12
 - name: external
 - name: trust
-  device_group: AWS
   comment: for trusted resources
 - name: untrust
   comment: for untrusted resources
   color: color4
 - name: dmz
+- name: AWS
+  device_group: AWS
+  color: color8
+- name: AZURE
   device_group: AZURE
+  color: color1
+- name: cloudflare
+  comment: has cloudflare address
+- name: pa_updates
+- name: address_group
