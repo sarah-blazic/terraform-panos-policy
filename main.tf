@@ -1,31 +1,31 @@
 locals {
-  sec_pol_f    = jsondecode(file("sec_policy.json"))
-  nat_f        = jsondecode(file("nat.json"))
-//  tags_y       = yamldecode(file("tags.yml"))
-//  tags_f       = jsondecode("tags.json")
+  sec_pol_f = jsondecode(file("sec_policy.json"))
+  nat_f     = jsondecode(file("nat.json"))
+  //  tags_y       = yamldecode(file("tags.yml"))
+  //  tags_f       = jsondecode("tags.json")
 
-//  virus = flatten([
-//    for k, v in jsondecode(file("antivirus.json")) : flatten([
-//      for obj, val in v : {
-//       name = try(val , null)
-//
-//    }
-//  ])
-//  ])
-    virus = {for virus in jsondecode(file("antivirus.json")): virus.name => virus }
-    virus_loop = { for d in local.virus : "hi" => d ...}
+  //  virus = flatten([
+  //    for k, v in jsondecode(file("antivirus.json")) : flatten([
+  //      for obj, val in v : {
+  //       name = try(val , null)
+  //
+  //    }
+  //  ])
+  //  ])
+  virus      = { for virus in jsondecode(file("antivirus.json")) : virus.name => virus }
+  virus_loop = { for d in local.virus : "hi" => d... }
 
 }
 
 module "policy" {
   source = "./modules/policy"
 
-  tags_file = "tags.json"
-  services_file = "services.json"
+  tags_file       = "tags.json"
+  services_file   = "services.json"
   addr_group_file = "addr_group.json"
-  addr_obj_file = "addr_obj.json"
+  addr_obj_file   = "addr_obj.json"
 
-//  sec_file = "sec_policy.json"
+  //  sec_file = "sec_policy.json"
   nat_file = "nat.json"
 
 
@@ -34,7 +34,7 @@ module "policy" {
 module "sec_prof" {
   source = "./modules/sec_profiles"
 
-//  antivirus_file = "antivirus.json"
+  //  antivirus_file = "antivirus.json"
 }
 
 //resource "panos_antivirus_security_profile" "main" {
