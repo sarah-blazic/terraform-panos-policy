@@ -2,9 +2,9 @@ resource "panos_panorama_security_rule_group" "this" {
   depends_on = [panos_panorama_administrative_tag.this, panos_panorama_service_object.this]
 
   #for yaml files change jsondecode => yamldecode
-  for_each = var.sec_file != "optional" ? {for item in jsondecode(file(var.sec_file)):
-  "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
-  => item} : tomap({})
+  for_each = var.sec_file != "optional" ? { for item in jsondecode(file(var.sec_file)) :
+    "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
+  => item } : tomap({})
 
   device_group       = try(each.value.device_group, "shared")
   rulebase           = try(each.value.rulebase, "pre-rulebase")
@@ -25,7 +25,7 @@ resource "panos_panorama_security_rule_group" "this" {
       source_users                       = lookup(rule.value, "source_users", ["any"])
       source_zones                       = lookup(rule.value, "source_zones", ["any"])
       description                        = lookup(rule.value, "description", null)
-      tags                               = lookup(rule.value,"tags", null)
+      tags                               = lookup(rule.value, "tags", null)
       type                               = lookup(rule.value, "type", "universal")
       negate_source                      = lookup(rule.value, "negate_source", false)
       negate_destination                 = lookup(rule.value, "negate_destination", false)
@@ -46,7 +46,7 @@ resource "panos_panorama_security_rule_group" "this" {
       wildfire_analysis                  = lookup(rule.value, "wildfire_analysis", null)
       data_filtering                     = lookup(rule.value, "data_filtering", null)
 
-      dynamic target {
+      dynamic "target" {
         for_each = lookup(rule.value, "target", null) != null ? { for t in rule.value.target : t.serial => t } : {}
 
         content {

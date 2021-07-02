@@ -1,6 +1,6 @@
 resource "panos_panorama_service_object" "this" {
   #for yaml files change jsondecode => yamldecode
-  for_each = var.services_file != "optional" ? {for obj in jsondecode(file(var.services_file)): obj.name => obj} : tomap({})
+  for_each = var.services_file != "optional" ? { for obj in jsondecode(file(var.services_file)) : obj.name => obj } : tomap({})
 
   destination_port             = lookup(each.value, "destination_port")
   name                         = each.key
