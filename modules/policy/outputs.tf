@@ -42,10 +42,5 @@ output "created_nat" {
 
 #test for bug fix
 output "target" {
-// value = can(values(panos_panorama_nat_rule_group.this)[*].rule.target) ? values(panos_panorama_nat_rule_group.this)[*].rule.target : [{}]
   value = {for i in local.target_loop : i.name => i}
-//   value = values(panos_panorama_nat_rule_group.this)[*].rule
-}
-output "target_l" {
-  value = {}
 }
