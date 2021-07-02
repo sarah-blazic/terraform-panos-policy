@@ -13,7 +13,7 @@ module "policy" {
 module "sec_prof" {
   source = "./modules/sec_profiles"
 
-//  antivirus_file = "./files/json/antivirus.json"
+  //  antivirus_file = "./files/json/antivirus.json"
 }
 
 
