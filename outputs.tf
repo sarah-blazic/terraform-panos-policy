@@ -1,7 +1,7 @@
-output "test" {
-  value = module.policy.target
-}
+//output "test" {
+//  value = module.policy.target
+//}
 
 //output "virus" {
-//  value = local.virus
+//  value = module.sec_prof.virus
 //}
