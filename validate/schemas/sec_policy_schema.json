@@ -1,0 +1,321 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "security policy json schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "rulebase": {
+        "type": "string",
+        "enum": ["pre-rulebase","post-rulebase"],
+        "default": "pre-rulebase"
+      },
+      "device_group": {
+        "type": "string",
+        "default": "shared",
+        "maxLength": 31,
+        "minLength": 1
+      },
+      "vsys": {
+        "type": "string",
+        "maxLength": 31,
+        "minLength": 1,
+        "default": "vsys1"
+      },
+      "position_keyword": {
+        "type": "string",
+        "enum": ["before","directly before","after","directly after","top","bottom",""],
+        "default": ""
+      },
+      "position_reference": {
+        "$ref": "#/$defs/naming_long"
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/naming_long"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "universal",
+                "interzone",
+                "intrazone"
+              ],
+              "default": "universal"
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 127,
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "source_zones": {
+              "type": "array",
+              "default": ["any"],
+              "items": {
+                "$ref": "#/$defs/naming"
+              },
+              "uniqueItems": true
+            },
+            "source_addresses": {
+              "type": "array",
+              "default": [
+                "any"
+              ],
+              "items": {
+                "$ref": "#/$defs/naming_long"
+              },
+              "uniqueItems": true
+            },
+            "negate_source": {
+              "type": "boolean",
+              "default": false
+            },
+            "source_users": {
+              "type": "array",
+              "default": [
+                "any"
+              ],
+              "items": {
+                "$ref": "#/$defs/naming_long"
+              },
+              "uniqueItems": true
+            },
+            "hip_profiles": {
+              "type": "array",
+              "default": [
+                "any"
+              ],
+              "items": {
+                "$ref": "#/$defs/naming"
+              },
+              "uniqueItems": true
+            },
+            "destination_zones": {
+              "type": "array",
+              "default": ["any"],
+              "items": {
+                "$ref": "#/$defs/naming"
+              },
+              "uniqueItems": true
+            },
+            "destination_addresses": {
+              "type": "array",
+              "default": [
+                "any"
+              ],
+              "items": {
+                "$ref": "#/$defs/naming_long"
+              },
+              "uniqueItems": true
+            },
+            "negate_destination": {
+              "type": "boolean",
+              "default": false
+            },
+            "applications": {
+              "type": "array",
+              "default": [
+                "any"
+              ],
+              "items": {
+                "type": "string",
+                "maxLength": 31,
+                "pattern": "^[a-zA-z][a-zA-Z0-9_.\\s-]+$"
+              },
+              "uniqueItems": true
+            },
+            "services": {
+              "type": "array",
+              "default": [
+                "application-default"
+              ],
+              "items": {
+                "$ref": "#/$defs/naming_long"
+              },
+              "uniqueItems": true
+            },
+            "categories": {
+              "type": "array",
+              "default": [
+                "any"
+              ],
+              "items": {
+                "$ref": "#/$defs/naming"
+              },
+              "uniqueItems": true
+            },
+            "action": {
+              "type": "string",
+              "enum": [
+                "allow",
+                "deny",
+                "drop",
+                "reset-client",
+                "reset-server",
+                "reset-both"
+              ],
+              "default": "allow"
+            },
+            "log_setting": {
+              "$ref": "#/$defs/naming_long"
+            },
+            "log_start": {
+              "type": "boolean",
+              "default": false
+            },
+            "log_end": {
+              "type": "boolean",
+              "default": true
+            },
+            "disabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "schedule": {
+              "$ref": "#/$defs/naming"
+            },
+            "icmp_unreachable": {
+              "type": "boolean",
+              "default": false
+            },
+            "disable_server_response_inspection": {
+              "type": "boolean",
+              "default": false
+            },
+            "profile_setting": {
+              "type": "string",
+              "enum": [
+                "none",
+                "group",
+                "profiles"
+              ],
+              "default": "none"
+            },
+            "group": {
+              "$ref": "#/$defs/naming"
+            },
+            "virus": {
+              "$ref": "#/$defs/naming"
+            },
+            "spyware": {
+              "$ref": "#/$defs/naming"
+            },
+            "vulnerability": {
+              "$ref": "#/$defs/naming"
+            },
+            "url_filtering": {
+              "$ref": "#/$defs/naming"
+            },
+            "file_blocking": {
+              "$ref": "#/$defs/naming"
+            },
+            "wildfire_analysis": {
+              "$ref": "#/$defs/naming"
+            },
+            "data_filtering": {
+              "$ref": "#/$defs/naming"
+            },
+            "target": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "serial": {
+                    "type": "string",
+                    "pattern": "^[0-9]+$"
+                  },
+                  "vsys_list": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/naming"
+                    },
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "serial"
+                ]
+              }
+            },
+            "negate_target": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": ["name","source_zones", "destination_zones"],
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "properties": {"profile_setting": {"enum": ["profiles"]}},
+              "anyOf": [
+                {"required": ["virus"]},
+                {"required": ["spyware"]},
+                {"required": ["vulnerability"]},
+                {"required": ["url_filtering"]},
+                {"required": ["file_blocking"]},
+                {"required": ["wildfire_analysis"]},
+                {"required": ["data_filtering"]}
+              ]
+            },
+            {
+              "properties": {"profile_setting": {"enum": ["group"]}},
+              "required": ["group"]
+            },
+            {
+              "properties": {"profile_setting": {"enum": ["none"]}},
+              "not": {
+                "required":["virus","spyware","vulnerability","url_filtering","file_blocking",
+                "wildfire_analysis","data_filtering", "group"]
+              }
+            }
+          ]
+        }
+      }
+      },
+    "required": ["rules"],
+    "dependencies": {
+      "device_group": {
+        "not": {
+          "required": ["vsys"]
+        }
+      },
+      "vsys": {
+        "not": {
+          "required": ["device_group", "target"]
+        }
+      },
+      "position_reference": {
+        "required": ["position_keyword"]
+      }
+    },
+    "additionalProperties": false
+  },
+  "uniqueItems": true,
+  "additionalItems": false,
+
+  "$defs": {
+    "naming": {
+      "type": "string",
+      "maxLength": 31,
+      "pattern": "^[a-zA-Z0-9_\\s-]+$"
+    },
+    "naming_long": {
+      "type": "string",
+      "maxLength": 63,
+      "pattern": "^[a-zA-Z0-9_\\s-]+$"
+    }
+  },
+  "additionalProperties": false
+}
