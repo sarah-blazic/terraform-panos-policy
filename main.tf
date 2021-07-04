@@ -14,7 +14,8 @@ module "sec_prof" {
   source = "./modules/sec_profiles"
 
   #for yaml file "./files/yaml/..."
-  antivirus_file = "./files/json/antivirus.json"
+//  antivirus_file = "./files/json/antivirus.json"
+  file_blocking_file = "./files/json/file_blocking.json"
 }
 
 
