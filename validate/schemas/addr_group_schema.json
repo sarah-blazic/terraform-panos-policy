@@ -26,14 +26,10 @@
         "uniqueItems": true
       },
       "dynamic_match": {
-        "type": "array",
-        "items":{
-          "type": "string",
-          "maxLength": 63,
-          "pattern": "^[a-zA-Z0-9_\\s-']+$",
-          "minLength": 1
-        },
-        "uniqueItems": true
+        "type": "string",
+        "maxLength": 63,
+        "pattern": "^[a-zA-Z0-9_\\s-']+$",
+        "minLength": 1
       },
       "description": {
         "type": "string",
