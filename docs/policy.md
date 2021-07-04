@@ -1,7 +1,10 @@
 
 Policy as Code
 ---
-Use JSON files to create resources on the panos panorama.
+Use JSON/YAML files to create resources on the panos panorama.
+
+1) The JSON files must be able to validate two different github actions (one checking for duplicate object names and one making sure it validates against the provided schemas).
+2) There are two modules : policy and security profiles which can create different resources on the panos panorama depending on what file you put into the module.
 
 Requirements
 ---
@@ -26,4 +29,16 @@ addr_group_file | (optional) Required if address groups are used in nat/security
 sec_file | (optional) Creates security policies.|`string`|n/a|yes
 nat_file | (optional) Creates NAT policies.|`string`|n/a|yes
 
-* each input will create a resource based off of the json file given
+* each input will create a resource based off of the JSON/YAML file given
+
+Secuirty Profile module
+---
+Inputs
+---
+Name | Description | Type | Default | Required
+-----|-----|-----|-----|-----
+antivirus_file | (optional) Creates antivirus security profiles. |`string`|n/a|no
+file_blocking_file | (optional) Creates file-blocking security profiles. | `string` | n/a | no
+
+* each input will create a resource based off of the JSON/YAML file given
+
