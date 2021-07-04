@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "tags json schema",
+  "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 127,
+          "minLength": 1
+        },
+        "device_group": {
+          "type": "string",
+          "default": "shared",
+          "maxLength": 31,
+          "minLength": 1
+        },
+        "vsys": {
+          "type": "string",
+          "maxLength": 31,
+          "minLength": 1,
+          "default": "vsys1"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^(color([1][0-6]|[1-9]))$"
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "dependencies": {
+        "device_group": {
+          "not": {
+            "required": ["vsys"]
+          }
+        },
+        "vsys": {
+          "not": {
+            "required": ["device_group"]
+          }
+        }
+      }
+    },
+    "uniqueItems": true,
+    "additionalItems": false
+}

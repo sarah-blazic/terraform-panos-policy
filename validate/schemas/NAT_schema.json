@@ -1,0 +1,374 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "nat rule json schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "device_group": {
+        "type": "string",
+        "default": "shared",
+        "maxLength": 31,
+        "minLength": 1
+      },
+      "vsys": {
+        "type": "string",
+        "maxLength": 31,
+        "minLength": 1,
+        "default": "vsys1"
+      },
+      "rulebase": {
+        "type": "string",
+        "enum": ["pre-rulebase","post-rulebase"],
+        "default": "pre-rulebase"
+      },
+      "position_keyword": {
+        "type": "string",
+        "enum": ["before","directly before","after","directly after","top","bottom",""],
+        "default": ""
+      },
+      "position_reference": {
+        "$ref": "#/$defs/naming_long"
+      },
+
+     "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/naming_long"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["ipv4","nat64","nptv6"],
+            "default": "ipv4"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 127,
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "disabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "target": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "serial": {
+                  "type": "string",
+                  "pattern": "^[0-9]+$"
+                },
+                "vsys_list": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/naming"
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "serial"
+              ]
+            }
+          },
+          "negate_target": {
+            "type": "boolean",
+            "default": false
+          },
+          "original_packet": {
+            "type": "object",
+            "properties": {
+              "source_zones": {
+                "type": "array",
+                "default": ["any"],
+                "items":
+                {
+                  "$ref": "#/$defs/naming"
+                },
+                "uniqueItems": true
+              },
+              "destination_zone": {
+                "$ref": "#/$defs/naming",
+                "default": "any"
+              },
+              "destination_interface": {
+                "type": "string",
+                "enum": ["any","loopback","tunnel","vlan"],
+                "default": "any"
+              },
+              "service": {
+                "$ref": "#/$defs/naming_long",
+                "default": "any"
+              },
+              "source_addresses": {
+                "type": "array",
+                "default": ["any"],
+                "items": {
+                  "$ref": "#/$defs/naming_long"
+                },
+                "uniqueItems": true
+              },
+              "destination_addresses": {
+                "type": "array",
+                "default": ["any"],
+                "items": {
+                  "$ref": "#/$defs/naming_long"
+                },
+                "uniqueItems": true
+              }
+            },
+            "required": ["source_zones","destination_zone", "source_addresses", "destination_addresses"],
+            "additionalProperties": false
+          },
+          "translated_packet": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "dynamic_ip_and_port",
+                  "dynamic_ip",
+                  "static_ip",
+                  "none"
+                ],
+                "default": "none"
+              },
+
+
+
+
+
+
+                  "translated_addresses": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/naming_long"
+                    },
+                    "uniqueItems": true
+                  },
+                  "interface_address": {
+                    "type": "object",
+                    "properties": {
+                      "interface": {
+                        "type": "string",
+                        "$ref": "#/$defs/naming"
+                      },
+                      "ip_address": {
+                        "type": "string",
+                        "description": "can take ipv4 addresses",
+                        "pattern": "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(([\\/](3[0-2]|[1-2][0-9]|[0-9])){0,1}))$",
+                        "default": "none"
+                      }
+                    },
+                    "required": [
+                      "interface"
+                    ]
+                  },
+
+                  "fallback": {
+                    "type": "object",
+                    "properties": {
+                      "translated_addresses": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/$defs/naming_long"
+                        },
+                        "uniqueItems": true
+                      },
+                      "interface": {
+                        "type": "string",
+                        "$ref": "#/$defs/naming"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "ip",
+                          "floating"
+                        ],
+                        "default": "ip"
+                      },
+                      "ip_address": {
+                        "type": "string",
+                        "description": "can take ipv4 addresses",
+                        "pattern": "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(([\\/](3[0-2]|[1-2][0-9]|[0-9])){0,1}))$",
+                        "default": "none"
+                      }
+                    },
+                    "$ref": "#/$defs/trans_inter_req"
+                  },
+
+
+
+
+
+
+
+
+              "static_ip": {
+                "type": "object",
+                "properties": {
+                  "translated_address": {
+                    "type": "string",
+                    "description": "can take ipv4 addresses",
+                    "pattern": "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(([\\/](3[0-2]|[1-2][0-9]|[0-9])){0,1}))$"
+                  },
+                  "bi_directional": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "translated_address"
+                ],
+                "additionalProperties": false
+              },
+              "destination": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "static_translation",
+                  "dynamic_translation"
+                ],
+                "default": "none"
+              },
+              "static_translation": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "description": "can take ipv4 addresses",
+                    "pattern": "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(([\\/](3[0-2]|[1-2][0-9]|[0-9])){0,1}))$"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "maximum": 65535,
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "address"
+                ]
+              },
+              "dynamic_translation": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "$ref": "#/$defs/naming_long"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "maximum": 65535,
+                    "minimum": 1
+                  },
+                  "distribution": {
+                    "type": "string",
+                    "enum": [
+                      "round-robin",
+                      "source-ip-hash",
+                      "ip-modulo",
+                      "ip-hash",
+                      "least-sessions"
+                    ],
+                    "default": "round-robin"
+                  }
+                },
+                "required": [
+                  "address"
+                ]
+              }
+            },
+
+            "required": ["source", "destination"],
+            "$ref": "#/$defs/trans_inter_req"
+
+          }
+        },
+        "required": ["name","original_packet", "translated_packet"],
+        "additionalProperties": false
+      }
+    }
+  },
+
+    "required": ["rules"],
+      "dependencies": {
+        "device_group": {
+          "not": {
+            "required": ["vsys"]
+          }
+        },
+        "vsys": {
+          "not": {
+            "required": ["device_group","target"]
+          }
+        },
+        "position_reference": {
+          "required": ["position_keyword"]
+        }
+      }
+  },
+  "uniqueItems": true,
+  "additionalItems": false,
+
+
+  "$defs": {
+    "naming": {
+      "type": "string",
+      "maxLength": 31,
+      "pattern": "^[a-zA-Z0-9_.\\s\\/-]+$"
+    },
+    "naming_long": {
+      "type": "string",
+      "maxLength": 63,
+      "pattern": "^[a-zA-Z0-9_\\s\\/-]+$"
+    },
+    "trans_inter_req": {
+      "anyOf": [
+        {
+          "required": [
+            "translated_addresses"
+          ],
+          "not": {
+            "required": [
+              "interface",
+              "type",
+              "ip_address"
+            ]
+          }
+        },
+        {
+          "required": [
+            "interface"
+          ],
+          "not": {
+            "required": [
+              "translated_addresses"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "interface",
+              "type",
+              "ip_address",
+              "translated_addresses"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

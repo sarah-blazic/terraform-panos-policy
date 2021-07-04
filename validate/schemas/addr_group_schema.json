@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "address object groups json schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "maxLength": 63,
+        "pattern": "^[a-zA-Z0-9_\\s-]+$"
+      },
+      "device_group": {
+        "type": "string",
+        "maxLength": 31,
+        "minLength": 1
+      },
+      "static_addresses": {
+       "type": "array",
+        "items":{
+          "type": "string",
+          "maxLength": 63,
+          "pattern": "^[a-zA-Z0-9_\\s-]+$",
+          "minLength": 1
+        },
+        "uniqueItems": true
+      },
+      "dynamic_match": {
+        "type": "array",
+        "items":{
+          "type": "string",
+          "maxLength": 63,
+          "pattern": "^[a-zA-Z0-9_\\s-']+$",
+          "minLength": 1
+        },
+        "uniqueItems": true
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 1023
+      },
+      "tags": {
+        "type": "array",
+        "items":{
+          "type": "string",
+          "maxLength": 127,
+          "minLength": 1
+        },
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "dependencies": {
+      "device_group": {
+        "not": {
+          "required": ["vsys"]
+        }
+      },
+      "vsys": {
+        "not": {
+          "required": ["device_group"]
+        }
+      },
+      "dynamic_match": {
+        "not": {
+          "required": ["static_addresses"]
+        }
+      },
+      "static_addresses": {
+        "not": {
+          "required": ["dynamic_match"]
+        }
+      }
+    }
+  },
+  "uniqueItems": true,
+  "additionalItems": false
+}

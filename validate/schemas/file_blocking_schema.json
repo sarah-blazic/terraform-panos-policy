@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "file blocking security profile json schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "$ref": "#/$defs/naming"
+      },
+      "device_group": {
+        "type": "string",
+        "default": "shared",
+        "maxLength": 31,
+        "minLength": 1
+      },
+      "vsys": {
+        "type": "string",
+        "maxLength": 31,
+        "minLength": 1,
+        "default": "vsys1"
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 255
+      },
+      "rule": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/naming"
+            },
+            "applications": {
+              "type": "array",
+              "default": ["any"],
+              "items": {
+                "type": "string",
+                "maxLength": 31,
+                "pattern": "^[a-zA-Z][a-zA-Z0-9_.\\s-]+$"
+              },
+              "uniqueItems": true
+            },
+            "file_types": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/files"
+              },
+              "uniqueItems": true
+            },
+            "direction": {
+              "type": "string",
+              "enum": ["both","upload","download"],
+              "default": "both"
+            },
+            "action": {
+              "type": "string",
+              "enum": ["alert","block","continue"],
+              "default": "alert"
+            }
+          },
+          "required": ["name"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["name"],
+    "additionalProperties": false,
+    "dependencies": {
+      "device_group": {
+        "not": {
+          "required": ["vsys"]
+        }
+      },
+      "vsys": {
+        "not": {
+          "required": ["device_group"]
+        }
+      }
+    }
+  },
+  "uniqueItems": true,
+  "additionalItems": false,
+
+
+  "$defs": {
+    "naming": {
+      "type": "string",
+      "maxLength": 31,
+      "pattern": "^[a-zA-Z0-9_.\\s-]+$"
+    },
+    "files":{
+      "type": "string",
+      "enum": ["any", "7z","access-shortcut","ace","ade","adp","ai","aip-encrypted-docx",
+        "aip-encrypted-ppt","aip-encrypted-xlsx","apk","arj","asm","asp","aspx","avi",
+        "avi-divx","avi-xvid","bas","bat","bmp","bmp-upload","bzip2","c_cpp-hdr","c_cpp-src",
+        "cab","catpart","cdr","chm","cin","class","cmd","com","cpl","cpp-hdr","cpp-src",
+        "crl","crx","csharp","csv","deflate64-zip","der","dex","dll","dmg","doc","docm",
+        "docx","dpx","dsn","dwf","dwg","dxf","edif","elf","emf","encrypted-7z",
+        "encrypted-doc","encrypted-docx","encrypted-office2007","encrypted-pdf","encrypted-ppt",
+        "encrypted-pptx","encrypted-rar","encrypted-xls","encrypted-xlsx","encrypted-zip","eps",
+        "exe","exr","flash","flv","gadget","gds","gif","gif-updload","gzip","hdf","hlp","hta",
+        "hwp","hwpx","ichitaro","ico","iff","inf","ins","iqy","iso","isp","its","iwork-keynote",
+        "iwork-numbers","iwork-pages","jar","java-src","job","jpeg","jpeg-upload","js","jse",
+        "jsp","lib","lnk","lzh","ma","macapp","mach-o","matlab/obj-c","mb","mda","mdb","mdi",
+        "mdt","mdw","mdz","mht","microsoft-shell","mif","mkv","mov","mp3","mp4","mpeg","mpeg-ts",
+        "mpkg","msc","msi","msoffice","msp","Multi-Level-Encoding","ocx","ogg","ops","ost",
+        "pbix","pbm","pcl","pdf","PE","pem","pgp","php","pif","pkg","pl","png","png-upload",
+        "powershell","ppt","pptx","prg","psd","pst","py","r","rar","reg","renamed-zip","rla",
+        "rm","rpf","rpm","rtf","ruby","rvt","scf","scr","sgi","sh","shb","shk","shs","slk",
+        "softimg","split-cab","split-rar","stp","svg","sys","tar","tbz2","tdb","tif","tiff",
+        "tmp","torrent","txt-upload","unknown-binary","url","vb","vbe","vbs","verilog","vhdl",
+        "vmdk","vxd","webm","webp","wmf","wmv","woff","wri","wsf","wsh","xll","xls","xlsx","xpm",
+        "zcompressed","zip"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

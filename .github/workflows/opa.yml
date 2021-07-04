@@ -1,0 +1,153 @@
+name: Check for JSON duplicates
+on: [push]
+
+jobs:
+  opa_eval:
+    runs-on: ubuntu-latest
+    name: Open Policy Agent
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Evaluate OPA Policy w/tags
+      id: opa_eval_tags
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/tags.json
+        
+    - name: Print Results tags
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_tags.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/addr_obj
+      id: opa_eval_addr_obj
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/addr_obj.json
+        
+    - name: Print Results addr_obj
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_addr_obj.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/addr_group
+      id: opa_eval_addr_group
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/addr_group.json
+
+    - name: Print Results addr_group
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_addr_group.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/anti_spyware
+      id: opa_eval_antispyware
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/spyware.json
+        
+    - name: Print Results antispyware
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_antispyware.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/antivirus
+      id: opa_eval_antivirus
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/antivirus.json
+        
+    - name: Print Results antivirus
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_antivirus.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/file_blocking
+      id: opa_eval_file_blocking
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/file_blocking.json
+        
+    - name: Print Results file blocking
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_file_blocking.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/NAT
+      id: opa_eval_NAT
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/nat.json
+        
+    - name: Print Results nat
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_NAT.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/sec_ex
+      id: opa_eval_sec_ex
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/sec_policy.json
+        
+    - name: Print Results sec_ex
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_sec_ex.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/sevices
+      id: opa_eval_service
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/services.json
+        
+    - name: Print Results services
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_service.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/vulnerability
+      id: opa_eval_vulnerability
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/vulnerability.json
+      
+    - name: Print Results vulnerability
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_vulnerability.outputs.opa_results }}
+
+    - name: Evaluate OPA Policy w/wildfire
+      id: opa_eval_wildfire
+      uses: migara/test-action@master
+      with:
+        tests: ./validate/opa/panos.rego
+        policy: ./files/json/wildfire.json
+    
+    - name: Print Results wildfire
+      run: |
+       echo $opa_results | jq -r '.result[].expressions[].value'
+      env:
+       opa_results: ${{ steps.opa_eval_wildfire.outputs.opa_results }}

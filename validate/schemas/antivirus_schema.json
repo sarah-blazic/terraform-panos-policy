@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "antivirus security profile json schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "$ref": "#/$defs/naming"
+      },
+      "device_group": {
+        "type": "string",
+        "default": "shared",
+        "maxLength": 31,
+        "minLength": 1
+      },
+      "vsys": {
+        "type": "string",
+        "maxLength": 31,
+        "minLength": 1,
+        "default": "vsys1"
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 255
+      },
+      "packet_capture": {
+        "type": "boolean",
+        "default": false
+      },
+      "threat_exceptions": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9]{5}$"
+        },
+        "uniqueItems": true
+      },
+      "decoder": {
+        "type": "array",
+        "items":
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+             "type": "string",
+              "enum": ["ftp","http","http2","imap","pop3","smb","smtp"]
+            },
+            "action": {
+              "$ref": "#/$defs/actions"
+            },
+            "wildfire_action": {
+              "$ref": "#/$defs/actions"
+            },
+            "machine_learning": {
+              "$ref": "#/$defs/actions"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "uniqueItems": true
+        }
+      },
+      "application_exception": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "application": {
+              "$ref": "#/$defs/naming"
+            },
+            "action": {
+              "$ref": "#/$defs/actions"
+            }
+          },
+          "required": [
+            "application"
+          ]
+        }
+      },
+      "machine_learning_model": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "$ref": "#/$defs/naming"
+            },
+            "action": {
+              "type": "string",
+              "enum": ["disable","enable","alert-only"]
+            }
+          },
+          "required": [
+            "model", "action"
+          ]
+        }
+      },
+      "machine_learning_exception": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "partial hash of file, hexidecimal",
+              "type": "string",
+              "maxLength": 31,
+              "pattern": "^[a-zA-Z0-9]+$"
+            },
+            "filename": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "dependencies": {
+          "device_group": {
+            "not": {
+              "required": ["vsys"]
+            }
+          },
+          "vsys": {
+            "not": {
+              "required": ["device_group"]
+            }
+          }
+        }
+        }
+      }
+    },
+     "required": ["name"]
+  },
+  "uniqueItems": true,
+  "additionalItems": false,
+
+
+  "$defs": {
+    "naming": {
+      "type": "string",
+      "maxLength": 31,
+      "pattern": "^[a-zA-Z0-9_.\\s-]+$"
+    },
+    "actions": {
+      "type": "string",
+      "enum": ["default","allow","alert","drop","reset-client","reset-server","reset-both"],
+      "default": "default"
+    }
+  },
+  "additionalProperties": false
+}

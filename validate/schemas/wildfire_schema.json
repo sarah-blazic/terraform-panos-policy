@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "wildfire analysis security profile json schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "$ref": "#/$defs/naming"
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 255
+      },
+      "device_group": {
+        "type": "string",
+        "default": "shared",
+        "maxLength": 31,
+        "minLength": 1
+      },
+      "vsys": {
+        "type": "string",
+        "maxLength": 31,
+        "minLength": 1,
+        "default": "vsys1"
+      },
+      "rule": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/naming"
+            },
+            "applications": {
+              "type": "array",
+              "default": ["any"],
+              "items": {
+                "type": "string",
+                "maxLength": 31,
+                "pattern": "^[a-zA-Z][a-zA-Z0-9_.\\s-]+$"
+              },
+              "uniqueItems": true
+            },
+            "file_types": {
+              "type": "array",
+              "default": ["any"],
+              "items": {
+                "type": "string",
+                "enum": ["any", "apk", "archive","email-link","flash","jar","linux","MacOSX",
+                "ms-office", "pdf","pe","script"]
+              },
+              "uniqueItems": true
+            },
+            "direction": {
+              "type": "string",
+              "enum": ["both","upload","download"],
+              "default": "both"
+            },
+            "analysis": {
+              "type": "string",
+              "enum": ["public-cloud","private-cloud"],
+              "default": "public-cloud"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name"]
+        }
+      }
+    },
+    "required": ["name"],
+    "dependencies": {
+      "device_group": {
+        "not": {
+          "required": ["vsys"]
+        }
+      },
+      "vsys": {
+        "not": {
+          "required": ["device_group"]
+        }
+      }
+    }
+  },
+  "uniqueItems": true,
+  "additionalItems": false,
+
+  "$defs": {
+    "naming": {
+      "type": "string",
+      "maxLength": 31,
+      "pattern": "^[a-zA-Z0-9_.\\s-]+$"
+    }
+  },
+  "additionalProperties": false
+}
