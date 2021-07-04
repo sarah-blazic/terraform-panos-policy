@@ -18,7 +18,7 @@
   },
   {
     "name": "ex2",
-    "device_group": "Shared",
+    "device_group": "shared",
     "rule": [
       {
         "name": "rule1",
