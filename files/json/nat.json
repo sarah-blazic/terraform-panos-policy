@@ -23,11 +23,6 @@
         "translated_packet": {
           "source": "dynamic_ip",
           "translated_addresses": ["google_dns1", "google_dns2"],
-          "fallback": {
-            "interface_address" : {
-              "interface": "ethernet1/4"
-            }
-          },
           "destination": "static_translation",
           "static_translation": {
             "address": "10.2.3.1",
@@ -63,7 +58,7 @@
   },
   {
     "device_group": "AWS",
-    "position_keyword": "directly before",
+    "position_keyword": "directly after",
     "position_reference": "rule2",
     "rules": [
       {
@@ -86,6 +81,7 @@
           "interface_address": {
             "interface": "ethernet1/5"
           },
+          "translated_addresses": [],
           "destination": "dynamic_translation",
           "dynamic_translation": {
             "address": "cloudflare",
@@ -95,6 +91,8 @@
       },
       {
         "name": "rule10",
+        "type": "nptv6",
+        "description": "rule10",
         "original_packet": {
           "source_zones": [
             "trust"
@@ -177,9 +175,10 @@
           ]
         },
         "translated_packet": {
-          "source": "dynamic_ip_and_port",
-          "interface_address": {
-            "interface": "ethernet1/5"
+          "source": "dynamic_ip",
+          "translated_addresses" : ["localnet"],
+          "fallback": {
+            "translated_addresses" : ["open"]
           },
           "destination": "dynamic_translation",
           "dynamic_translation": {

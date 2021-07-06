@@ -21,3 +21,15 @@ variable "file_blocking_file" {
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
+
+#wildfire analysis
+variable "wildfire_file" {
+  type        = string
+  description = "Path to JSON file that will supply the proper parameters to create wildfire analysis profiles."
+  default     = "optional"
+
+  validation {
+    condition     = var.wildfire_file == "optional" || (fileexists(var.wildfire_file) && (can(jsondecode(file(var.wildfire_file))) || can(yamldecode(file(var.wildfire_file)))))
+    error_message = "Not a valid JSON/YAML file to read."
+  }
+}
