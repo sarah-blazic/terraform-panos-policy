@@ -6,7 +6,7 @@ module "policy" {
   services_file   = "./files/json/services.json"
   addr_group_file = "./files/json/addr_group.json"
   addr_obj_file   = "./files/json/addr_obj.json"
-  sec_file        = "./files/json/sec_policy.json"
+//  sec_file        = "./files/json/sec_policy.json"
   //  nat_file        = "./files/json/nat.json"
 }
 
