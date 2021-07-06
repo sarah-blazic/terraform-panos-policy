@@ -3,12 +3,14 @@
     "rules": [
       {
         "name": "rule1",
+        "type": "interzone",
+        "action": "deny",
         "source_zones": ["untrust"],
         "source_users": ["any"],
         "destination_zones": ["dmz"],
         "applications": ["ssl", "hotmail"],
         "services": ["application-default"],
-        "categories": ["any"],
+        "categories": ["adult"],
         "target": [
           {"serial": "1234567890"},
           {"serial": "1234567899"}
@@ -22,7 +24,9 @@
         "applications": ["ssl", "hotmail"],
         "services": ["application-default"],
         "categories": ["any"],
-        "log_start": true
+        "log_start": true,
+        "profile_setting": "profiles",
+        "wildfire_analysis": "ex1"
       }
     ]
   },

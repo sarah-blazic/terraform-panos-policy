@@ -55,8 +55,7 @@
           "any"
         ],
         "file_types": [
-          "ms-office",
-          "any"
+          "ms-office"
         ],
         "name": "rule3",
         "direction": "download"
