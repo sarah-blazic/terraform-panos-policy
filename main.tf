@@ -17,6 +17,7 @@ module "sec_prof" {
   antivirus_file     = "./files/json/antivirus.json"
   file_blocking_file = "./files/json/file_blocking.json"
   wildfire_file      = "./files/json/wildfire.json"
+  vulnerability_file = "./files/json/vulnerability.json"
 }
 
 
