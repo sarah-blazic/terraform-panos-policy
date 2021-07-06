@@ -39,6 +39,8 @@ Name | Description | Type | Default | Required
 -----|-----|-----|-----|-----
 antivirus_file | (optional) Creates antivirus security profiles. |`string`|n/a|no
 file_blocking_file | (optional) Creates file-blocking security profiles. | `string` | n/a | no
+vulnerability_file | (optional) Creates vulnerability security profiles. |`string`|n/a|no
+wildfire_file | (optional) Creates wildfire analysis security profiles. |`string`|n/a|no
 
 * each input will create a resource based off of the JSON/YAML file given
 

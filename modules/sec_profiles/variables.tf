@@ -22,6 +22,18 @@ variable "file_blocking_file" {
   }
 }
 
+#vulnerability
+variable "vulnerability_file" {
+  type        = string
+  description = "Path to JSON file that will supply the proper parameters to create vulnerability profiles."
+  default     = "optional"
+
+  validation {
+    condition     = var.vulnerability_file == "optional" || (fileexists(var.vulnerability_file) && (can(jsondecode(file(var.vulnerability_file))) || can(yamldecode(file(var.vulnerability_file)))))
+    error_message = "Not a valid JSON/YAML file to read."
+  }
+}
+
 #wildfire analysis
 variable "wildfire_file" {
   type        = string
