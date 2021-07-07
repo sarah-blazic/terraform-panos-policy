@@ -31,8 +31,8 @@ locals {
     sat_translated_addresses          = try(val.translated_packet.translated_addresses, [])
     sat_interface                     = try(val.translated_packet.interface_address.interface, null)
     sat_ip_address                    = try(val.translated_packet.interface_address.ip_address, null)
-    sat_fallback_type_trans           = can(val.translated_packet.fallback) ? (contains(keys(val.translated_packet.fallback), "translated_addresses") ? "translated-address" : null) : null
-    sat_fallback_type_inter           = can(val.translated_packet.fallback) ? (contains(keys(val.translated_packet.fallback), "interface_address") ? "interface-address" : null) : null
+    sat_fallback_type_trans           = can(val.translated_packet.fallback) ? (contains(keys(val.translated_packet.fallback), "translated_addresses") ? "translated-address" : null) : "none"
+    sat_fallback_type_inter           = can(val.translated_packet.fallback) ? (contains(keys(val.translated_packet.fallback), "interface_address") ? "interface-address" : null) : "none"
     sat_fallback_translated_addresses = try(val.translated_packet.fallback.translated_addresses, [])
     sat_fallback_interface            = try(val.translated_packet.fallback.interface_address.interface, null)
     sat_fallback_ip_type              = try(val.translated_packet.fallback.interface_address.type, null)
@@ -84,7 +84,7 @@ resource "panos_panorama_nat_rule" "target" {
   sat_translated_addresses          = try(each.value.sat_translated_addresses, [])
   sat_interface                     = try(each.value.sat_interface, null)
   sat_ip_address                    = try(each.value.sat_ip_address, null)
-  sat_fallback_type                 = can(each.value.sat_fallback_type_trans) ? each.value.sat_fallback_type_trans : try(each.value.sat_fallback_type_inter, null)
+  sat_fallback_type                 = can(each.value.sat_fallback_type_trans) ? each.value.sat_fallback_type_trans : try(each.value.sat_fallback_type_inter, "none")
   sat_fallback_translated_addresses = try(each.value.sat_fallback_addresses, [])
   sat_fallback_interface            = try(each.value.sat_fallback_interface, null)
   sat_fallback_ip_type              = try(each.value.sat_fallback_ip_type, null)
@@ -209,7 +209,7 @@ resource "panos_panorama_nat_rule_group" "this" {
 
                 content {
                   dynamic "translated_address" {
-                    for_each = try(rule.value.translated_packet.fallback.translated_addresses, [], null) != null ? [1] : []
+                    for_each = try(rule.value.translated_packet.fallback.translated_addresses, null) != null ? [1] : []
                     content {
                       translated_addresses = try(rule.value.translated_packet.fallback.translated_addresses, null)
                     }
