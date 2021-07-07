@@ -14,3 +14,5 @@ terraform {
     }
   }
 }
+
+provider "panos" {}
