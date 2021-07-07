@@ -31,6 +31,17 @@ nat_file | (optional) Creates NAT policies.|`string`|n/a|yes
 
 * each input will create a resource based off of the JSON/YAML file given
 
+Outputs
+---
+Name | Description
+-----|-----
+created_tags | Shows the tags that were created.
+created_services |Shows the services that were created.
+created_addr_obj |Shows the address objects that were created.
+created_addr_group |Shows the address groups that were created.
+created_sec |Shows the security policies that were created.
+created_nat |Shows the NAT policies that were created.
+
 Secuirty Profile module
 ---
 Inputs
@@ -45,3 +56,12 @@ wildfire_file | (optional) Creates wildfire analysis security profiles. |`string
 
 * each input will create a resource based off of the JSON/YAML file given
 
+Outputs
+---
+Name | Description
+-----|-----
+created_antivirus_prof | Shows the antivirus security profiles that were created.
+created_spyware_prof |Shows the anti-spyware security profiles that were created.
+created_file_blocking_prof |Shows the file blocking security profiles that were created.
+created_vulnerability_prof |Shows the vulnerability security profiles that were created.
+created_wildfire_prof |Shows the wildfire analysis security profiles that were created.

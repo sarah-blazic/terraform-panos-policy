@@ -25,6 +25,8 @@ output "created_addr_group" {
 
 
 
+
+
 #policy
 output "created_sec" {
   #for yaml files change jsondecode => yamldecode

@@ -2,6 +2,15 @@
   {
     "name": "ex1",
     "sinkhole_ipv4_address": "72.99.65.255",
+      "white_list": [
+        {
+          "name": "updates.paloaltonetworks.com",
+          "description": "pa updates"
+        },
+        {
+          "name": "www.paloaltonetworks.com"
+        }
+      ],
     "exception": [
       {
         "name": "18302",
@@ -35,26 +44,20 @@
         "packet_capture": "extended-capture"
       }
     ],
-    "sinkhole_ipv6_address": "5cdb:8cc2:26b1:55b0:6527:d951:be19:67b9",
+    "sinkhole_ipv6_address": "::1",
      "dns_category": [
       {
-        "name": "Grayware Domains",
+        "name": "pan-dns-sec-grayware",
         "packet_capture": "single-packet"
       },
       {
-        "name": "Malware Domains",
+        "name": "pan-dns-sec-malware",
         "action": "default"
       },
       {
-        "name": "Parked Domains",
+        "name": "pan-dns-sec-parked",
         "packet_capture": "disable",
         "action": "block"
-      }
-    ],
-    "white_list": [
-      {
-        "name": "DNS Tunnel Traffic Detection",
-        "description": "This signature detects the DNS tunnel traffic"
       }
     ],
     "description": "ex2 anti spyware profile"

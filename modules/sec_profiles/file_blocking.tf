@@ -7,13 +7,13 @@ resource "panos_file_blocking_security_profile" "this" {
   description  = try(each.value.description, null)
 
   dynamic "rule" {
-    for_each = lookup(each.value, "rule", null) != null ? { for rules in each.value.rule : rules.name => rules } : tomap({})
+    for_each = try(each.value.rule, null) != null ? { for rules in each.value.rule : rules.name => rules } : tomap({})
     content {
       name         = rule.value.name
-      applications = lookup(rule.value, "applications", ["any"])
-      file_types   = lookup(rule.value, "file_types", ["any"])
-      direction    = lookup(rule.value, "direction", "both")
-      action       = lookup(rule.value, "action", "alert")
+      applications = try(rule.value.applications, ["any"])
+      file_types   = try(rule.value.file_types, ["any"])
+      direction    = try(rule.value.direction, "both")
+      action       = try(rule.value.action, "alert")
     }
   }
 }
