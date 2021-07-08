@@ -1,0 +1,37 @@
+---
+- name: Outbound-WF
+  rule:
+  - name: Forward-All
+    applications:
+    - any
+    file_types:
+    - any
+    direction: both
+    analysis: public-cloud
+- name: Inbound-WF
+  rule:
+  - name: Forward-All
+    applications:
+    - any
+    file_types:
+    - any
+    direction: both
+    analysis: public-cloud
+- name: Internal-WF
+  rule:
+  - name: Forward-All
+    applications:
+    - any
+    file_types:
+    - any
+    direction: both
+    analysis: public-cloud
+- name: Alert-Only-WF
+  rule:
+  - name: Forward-All
+    applications:
+    - any
+    file_types:
+    - any
+    direction: both
+    analysis: public-cloud
