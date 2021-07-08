@@ -1,3 +1,9 @@
+#Validation checks:
+#1) if the var is on default (aka not being used)
+#2) a. if the file exists
+#   b. if the file can be decoded by jsondecode or yamldecode (the 2 file input options)
+
+
 #antivirus
 variable "antivirus_file" {
   type        = string
@@ -18,6 +24,18 @@ variable "file_blocking_file" {
 
   validation {
     condition     = var.file_blocking_file == "optional" || (fileexists(var.file_blocking_file) && (can(jsondecode(file(var.file_blocking_file))) || can(yamldecode(file(var.file_blocking_file)))))
+    error_message = "Not a valid JSON/YAML file to read."
+  }
+}
+
+#anti-spyware
+variable "spyware_file" {
+  type        = string
+  description = "Path to JSON file that will supply the proper parameters to create anti-spyware profiles."
+  default     = "optional"
+
+  validation {
+    condition     = var.spyware_file == "optional" || (fileexists(var.spyware_file) && (can(jsondecode(file(var.spyware_file))) || can(yamldecode(file(var.spyware_file)))))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }

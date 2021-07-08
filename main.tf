@@ -6,8 +6,8 @@ module "policy" {
   services_file   = "./files/json/services.json"
   addr_group_file = "./files/json/addr_group.json"
   addr_obj_file   = "./files/json/addr_obj.json"
-  //  sec_file        = "./files/json/sec_policy.json"
-  //  nat_file        = "./files/json/nat.json"
+  sec_file        = "./files/json/sec_policy.json"
+  nat_file        = "./files/json/nat.json"
 }
 
 module "sec_prof" {
@@ -18,6 +18,7 @@ module "sec_prof" {
   file_blocking_file = "./files/json/file_blocking.json"
   wildfire_file      = "./files/json/wildfire.json"
   vulnerability_file = "./files/json/vulnerability.json"
+  spyware_file       = "./files/json/spyware.json"
 }
 
 

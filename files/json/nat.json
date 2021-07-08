@@ -81,7 +81,6 @@
           "interface_address": {
             "interface": "ethernet1/5"
           },
-          "translated_addresses": [],
           "destination": "dynamic_translation",
           "dynamic_translation": {
             "address": "cloudflare",

@@ -1,7 +1,7 @@
-//output "test" {
-//  value = module.policy.target
+//output "nat" {
+//  value = module.policy.created_nat
 //}
-
-//output "virus" {
-//  value = module.sec_prof.virus
+//
+//output "antivirus" {
+//  value = module.sec_prof.created_antivirus_prof
 //}
