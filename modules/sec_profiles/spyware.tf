@@ -37,7 +37,7 @@ resource "panos_anti_spyware_security_profile" "this" {
   }
 
   dynamic "rule" {
-    for_each = try(each.value.rule, null) != null ? { for rules in each.value.rule : rules.name => rules } : tomap({})
+    for_each = try(each.value.rule, null) != null ? { for rules in each.value.rule : rules.name => rules } : {}
     content {
       name              = rule.value.name
       threat_name       = try(rule.value.threat_name, "any")
@@ -51,7 +51,7 @@ resource "panos_anti_spyware_security_profile" "this" {
   }
 
   dynamic "exception" {
-    for_each = try(each.value.exception, null) != null ? { for ex in each.value.exception : ex.name => ex } : tomap({})
+    for_each = try(each.value.exception, null) != null ? { for ex in each.value.exception : ex.name => ex } : {}
     content {
       name              = exception.value.name
       action            = try(exception.value.action, "default")
