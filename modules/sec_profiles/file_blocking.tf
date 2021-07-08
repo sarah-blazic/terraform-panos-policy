@@ -7,7 +7,7 @@ resource "panos_file_blocking_security_profile" "this" {
   description  = try(each.value.description, null)
 
   dynamic "rule" {
-    for_each = try(each.value.rule, null) != null ? { for rules in each.value.rule : rules.name => rules } : tomap({})
+    for_each = try(each.value.rule, null) != null ? { for rules in each.value.rule : rules.name => rules } : {}
     content {
       name         = rule.value.name
       applications = try(rule.value.applications, ["any"])
