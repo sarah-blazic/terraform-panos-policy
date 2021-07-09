@@ -1,6 +1,6 @@
 resource "panos_anti_spyware_security_profile" "this" {
   #for yaml files change jsondecode => yamldecode
-  for_each = var.spyware_file != "optional" ? { for file in jsondecode(file(var.spyware_file)) : file.name => file } : tomap({})
+  for_each = var.spyware_file != "optional" ? { for file in jsondecode(file(var.spyware_file)) : file.name => file... } : tomap({})
 
   name                  = each.key
   device_group          = try(each.value.device_group, "shared")

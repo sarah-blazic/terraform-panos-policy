@@ -2,15 +2,15 @@
   {
     "name": "ex1",
     "sinkhole_ipv4_address": "72.99.65.255",
-      "white_list": [
-        {
-          "name": "updates.paloaltonetworks.com",
-          "description": "pa updates"
-        },
-        {
-          "name": "www.paloaltonetworks.com"
-        }
-      ],
+    "white_list": [
+      {
+        "name": "updates.paloaltonetworks.com",
+        "description": "pa updates"
+      },
+      {
+        "name": "www.paloaltonetworks.com"
+      }
+    ],
     "exception": [
       {
         "name": "18302",
