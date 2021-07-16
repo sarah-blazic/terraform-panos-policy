@@ -1,6 +1,5 @@
 resource "panos_antivirus_security_profile" "this" {
-  #for yaml files change jsondecode => yamldecode
-  for_each = var.antivirus_file != "optional" ? { for virus in jsondecode(file(var.antivirus_file)) : virus.name => virus } : tomap({})
+  for_each = var.antivirus_file != "optional" ? { for virus in var.antivirus_file : virus.name => virus ... } : tomap({})
 
   name              = each.key
   device_group      = try(each.value.device_group, "shared")
