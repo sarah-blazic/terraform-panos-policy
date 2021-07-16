@@ -1,5 +1,5 @@
 resource "panos_antivirus_security_profile" "this" {
-  for_each = var.antivirus_file != "optional" ? { for virus in var.antivirus_file : virus.name => virus ... } : tomap({})
+  for_each = var.antivirus_file != "optional" ? { for virus in var.antivirus_file : virus.name => virus... } : tomap({})
 
   name              = each.key
   device_group      = try(each.value.device_group, "shared")
