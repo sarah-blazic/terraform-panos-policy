@@ -1,12 +1,12 @@
 module "policy" {
   source = "./modules/policy"
 
-  tags_file       = "./files/json/tags.json"
-  services_file   = "./files/json/services.json"
-  addr_group_file = "./files/json/addr_group.json"
-  addr_obj_file   = "./files/json/addr_obj.json"
-  sec_file        = "./files/json/sec_policy.json"
-  nat_file        = "./files/json/nat.json"
+  tags_file       = try(jsondecode(file("./files/json/tags.json")), {} )
+  services_file   = try(jsondecode(file("./files/json/services.json")), {} )
+  addr_group_file = try(jsondecode(file("./files/json/addr_group.json")), {} )
+  addr_obj_file   = try(jsondecode(file("./files/json/addr_obj.json")), {} )
+  sec_file        = try(jsondecode(file("./files/json/sec_policy.json")), {} )
+  nat_file        = try(jsondecode(file("./files/json/nat.json")), {} )
 }
 
 module "sec_prof" {
