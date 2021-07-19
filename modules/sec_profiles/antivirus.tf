@@ -13,7 +13,7 @@ resource "panos_antivirus_security_profile" "this" {
       name                    = decoder.value.name
       action                  = try(decoder.value.action, "default")
       wildfire_action         = try(decoder.value.wildfire_action, "default")
-      machine_learning_action = try(decoder.value.machine_learning_action, null)
+      machine_learning_action = try(decoder.value.machine_learning, null)
     }
   }
 

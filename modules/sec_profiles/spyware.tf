@@ -1,5 +1,7 @@
 resource "panos_anti_spyware_security_profile" "this" {
+
   for_each = var.spyware_file != "optional" ? { for file in var.spyware_file : file.name => file... } : tomap({})
+
 
   name                  = each.key
   device_group          = try(each.value.device_group, "shared")

@@ -1,6 +1,8 @@
 resource "panos_file_blocking_security_profile" "this" {
   #for yaml files change jsondecode => yamldecode
+
   for_each = var.file_blocking_file != "optional" ? { for file in var.file_blocking_file : file.name => file... } : tomap({})
+
 
   name         = each.key
   device_group = try(each.value.device_group, "shared")

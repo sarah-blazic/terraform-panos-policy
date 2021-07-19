@@ -1,0 +1,52 @@
+---
+- rulebase: pre-rulebase
+  rules:
+  - name: Outbound Block Rule
+    description: Block outbound sessions with destination address matching one of
+      the Palo Alto Networks external dynamic lists for high risk and known malicious
+      IP addresses.
+    source_zones:
+    - any
+    source_addresses:
+    - any
+    destination_zones:
+    - any
+    destination_addresses:
+    - panw-highrisk-ip-list
+    - panw-known-ip-list
+    - panw-bulletproof-ip-list
+    source_user:
+    - any
+    categories:
+    - any
+    applications:
+    - any
+    services:
+    - any
+    hip_profiles:
+    - any
+    action: deny
+  - name: Inbound Block Rule
+    description: Block inbound sessions with source address matching one of the Palo
+      Alto Networks external dynamic lists for high risk and known malicious IP addresses.
+    source_zones:
+    - any
+    source_addresses:
+    - any
+    destination_zones:
+    - any
+    destination_addresses:
+    - panw-highrisk-ip-list
+    - panw-known-ip-list
+    - panw-bulletproof-ip-list
+    source_user:
+    - any
+    categories:
+    - any
+    applications:
+    - any
+    services:
+    - any
+    hip_profiles:
+    - any
+    action: deny
