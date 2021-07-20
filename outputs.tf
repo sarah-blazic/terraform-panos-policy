@@ -1,26 +1,26 @@
 #tags
 output "created_tags" {
   description = "Shows the tags that were created."
-  value = var.tags_file != "optional" ? { for tag in var.tags_file : tag.name => tag } : {}
+  value       = var.tags_file != "optional" ? { for tag in var.tags_file : tag.name => tag } : {}
 }
 
 
 #services
 output "created_services" {
   description = "Shows the services that were created."
-  value = var.services_file != "optional" ? { for service in var.services_file : service.name => service } : tomap({})
+  value       = var.services_file != "optional" ? { for service in var.services_file : service.name => service } : tomap({})
 }
 
 
 #address
 output "created_addr_obj" {
   description = "Shows the address objects that were created."
-  value = var.addr_obj_file != "optional" ? { for obj in var.addr_obj_file : obj.name => obj } : tomap({})
+  value       = var.addr_obj_file != "optional" ? { for obj in var.addr_obj_file : obj.name => obj } : tomap({})
 }
 
 output "created_addr_group" {
   description = "Shows the address groups that were created."
-  value = var.addr_group_file != "optional" ? { for group in var.addr_group_file : group.name => group } : tomap({})
+  value       = var.addr_group_file != "optional" ? { for group in var.addr_group_file : group.name => group } : tomap({})
 }
 
 
