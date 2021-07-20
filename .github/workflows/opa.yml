@@ -14,7 +14,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/json/tags.json #path to tags file
+        policy: ./examples/files/json/tags.json #path to tags file
 
     - name: Print Results tags
       run: |
@@ -27,7 +27,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/json/addr_obj.json #path to address objects file
+        policy: ./examples/files/json/addr_obj.json #path to address objects file
 
     - name: Print Results addr_obj
       run: |
@@ -40,7 +40,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/json/addr_group.json #path to address groups file
+        policy: ./examples/files/json/addr_group.json #path to address groups file
 
     - name: Print Results addr_group
       run: |
@@ -53,7 +53,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/json/nat.json #path to nat security policy file
+        policy: ./examples/files/json/nat.json #path to nat security policy file
 
     - name: Print Results nat
       run: |
@@ -66,7 +66,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/json/sec_policy.json #path to security policy file
+        policy: ./examples/files/json/sec_policy.json #path to security policy file
 
     - name: Print Results sec_ex
       run: |
@@ -79,7 +79,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/json/services.json #path to services file
+        policy: ./examples/files/json/services.json #path to services file
 
     - name: Print Results services
       run: |
