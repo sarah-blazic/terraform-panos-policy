@@ -5,7 +5,7 @@ provider "panos" {
 }
 
 module "policy" {
-  source = "sarah-blazic/policy/panos"
+  source  = "sarah-blazic/policy/panos"
   version = "0.1.1"
 
   tags_file       = try(jsondecode(file("./files/json/tags.json")), {})
