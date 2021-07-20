@@ -4,9 +4,6 @@
     "rules": [
       {
         "name": "rule1",
-        "target": [
-          {"serial": "1234567890"}
-        ],
         "original_packet": {
           "source_zones": [
             "trust"
