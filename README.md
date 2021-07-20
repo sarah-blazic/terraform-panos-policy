@@ -111,7 +111,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/examples/json/tags.json #path to tags file
+        policy: ./examples/files/json/tags.json #path to tags file
         
     - name: Print Results tags
       run: |
@@ -124,7 +124,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/examples/json/addr_obj.json #path to address objects file
+        policy: ./examples/files/json/addr_obj.json #path to address objects file
         
     - name: Print Results addr_obj
       run: |
@@ -137,7 +137,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/examples/json/addr_group.json #path to address groups file
+        policy: ./examples/files/json/addr_group.json #path to address groups file
 
     - name: Print Results addr_group
       run: |
@@ -150,7 +150,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/examples/json/nat.json #path to nat security policy file
+        policy: ./examples/files/json/nat.json #path to nat security policy file
         
     - name: Print Results nat
       run: |
@@ -163,7 +163,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/examples/json/sec_policy.json #path to security policy file
+        policy: ./examples/files/json/sec_policy.json #path to security policy file
         
     - name: Print Results sec_ex
       run: |
@@ -176,7 +176,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/examples/json/services.json #path to services file
+        policy: ./examples/files/json/services.json #path to services file
         
     - name: Print Results services
       run: |
@@ -200,37 +200,37 @@ jobs:
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/tags_schema.json
-          jsons: ./examples/examples/json/tags.json #path to tags file
+          jsons: ./examples/files/json/tags.json #path to tags file
           
       - name: Validate address objects JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/addr_obj_schema.json
-          jsons: ./examples/examples/json/addr_obj.json #path to address objects file
+          jsons: ./examples/files/json/addr_obj.json #path to address objects file
 
       - name: Validate address group JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/addr_group_schema.json
-          jsons: ./examples/examples/json/addr_group.json #path to address groups file
+          jsons: ./examples/files/json/addr_group.json #path to address groups file
 
       - name: Validate nat JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/NAT_schema.json
-          jsons: ./examples/examples/json/nat.json #path to NAT policy file
+          jsons: ./examples/files/json/nat.json #path to NAT policy file
 
       - name: Validate security policy JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/sec_policy_schema.json
-          jsons: ./examples/examples/json/sec_policy.json #path to security policy file
+          jsons: ./examples/files/json/sec_policy.json #path to security policy file
 
       - name: Validate services JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/services_schema.json
-          jsons: ./examples/examples/json/services.json #path to services file
+          jsons: ./examples/files/json/services.json #path to services file
 ```
 
 3. Create a **"main.tf"** with the panos provider and security profile module blocks.
