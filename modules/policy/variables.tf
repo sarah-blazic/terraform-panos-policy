@@ -6,12 +6,12 @@
 
 #tags
 variable "tags_file" {
-  type        = string
-  description = "Path to JSON file that will supply the proper parameters to create tags."
+  type        = any
+  description = "jsondecode and yamldecode with path to JSON/YAML file that will supply the proper parameters to create antivirus profiles."
   default     = "optional"
 
   validation { //
-    condition     = var.tags_file == "optional" || (fileexists(var.tags_file) && (can(jsondecode(file(var.tags_file))) || can(yamldecode(file(var.tags_file)))))
+    condition     = var.tags_file == "optional" || (var.tags_file != {} && can(var.tags_file))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
@@ -19,12 +19,12 @@ variable "tags_file" {
 
 #services
 variable "services_file" {
-  type        = string
-  description = "Path to JSON file that will supply the proper parameters to create the services."
+  type        = any
+  description = "jsondecode and yamldecode with path to JSON/YAML file that will supply the proper parameters to create antivirus profiles."
   default     = "optional"
 
   validation {
-    condition     = var.services_file == "optional" || (fileexists(var.services_file) && (can(jsondecode(file(var.services_file))) || can(yamldecode(file(var.services_file)))))
+    condition     = var.services_file == "optional" || (var.services_file != {} && can(var.services_file))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
@@ -32,23 +32,23 @@ variable "services_file" {
 
 #address
 variable "addr_obj_file" {
-  type        = string
-  description = "Path to JSON file that will supply the proper parameters to create the address objects."
+  type        = any
+  description = "jsondecode and yamldecode with path to JSON/YAML file that will supply the proper parameters to create antivirus profiles."
   default     = "optional"
 
   validation {
-    condition     = var.addr_obj_file == "optional" || (fileexists(var.addr_obj_file) && (can(jsondecode(file(var.addr_obj_file))) || can(yamldecode(file(var.addr_obj_file)))))
+    condition     = var.addr_obj_file == "optional" || (var.addr_obj_file != {} && can(var.addr_obj_file))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
 
 variable "addr_group_file" {
-  type        = string
-  description = "Path to JSON file that will supply the proper parameters to create the address groups."
+  type        = any
+  description = "jsondecode and yamldecode with path to JSON/YAML file that will supply the proper parameters to create antivirus profiles."
   default     = "optional"
 
   validation {
-    condition     = var.addr_group_file == "optional" || (fileexists(var.addr_group_file) && (can(jsondecode(file(var.addr_group_file))) || can(yamldecode(file(var.addr_group_file)))))
+    condition     = var.addr_group_file == "optional" || (var.addr_group_file != {} && can(var.addr_group_file))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
@@ -56,23 +56,23 @@ variable "addr_group_file" {
 
 #policy
 variable "sec_file" {
-  type        = string
-  description = "Path to JSON/YAML file that will supply the proper parameters to create the security policies."
+  type        = any
+  description = "jsondecode and yamldecode with path to JSON/YAML file that will supply the proper parameters to create antivirus profiles."
   default     = "optional"
 
   validation {
-    condition     = var.sec_file == "optional" || (fileexists(var.sec_file) && (can(jsondecode(file(var.sec_file))) || can(yamldecode(file(var.sec_file)))))
+    condition     = var.sec_file == "optional" || (var.sec_file != {} && can(var.sec_file))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
 
 variable "nat_file" {
-  type        = string
-  description = "Path to JSON/YAML file that will supply the proper parameters to create the NAT policies."
+  type        = any
+  description = "jsondecode and yamldecode with path to JSON/YAML file that will supply the proper parameters to create antivirus profiles."
   default     = "optional"
 
   validation {
-    condition     = var.nat_file == "optional" || (fileexists(var.nat_file) && (can(jsondecode(file(var.nat_file))) || can(yamldecode(file(var.nat_file)))))
+    condition     = var.nat_file == "optional" || (var.nat_file != {} && can(var.nat_file))
     error_message = "Not a valid JSON/YAML file to read."
   }
 }
