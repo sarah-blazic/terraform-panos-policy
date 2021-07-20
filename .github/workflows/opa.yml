@@ -14,7 +14,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/tags.json
+        policy: ./examples/json/tags.json
         
     - name: Print Results tags
       run: |
@@ -27,7 +27,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/addr_obj.json
+        policy: ./examples/json/addr_obj.json
         
     - name: Print Results addr_obj
       run: |
@@ -40,7 +40,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/addr_group.json
+        policy: ./examples/json/addr_group.json
 
     - name: Print Results addr_group
       run: |
@@ -53,7 +53,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/spyware.json
+        policy: ./examples/json/spyware.json
         
     - name: Print Results antispyware
       run: |
@@ -66,7 +66,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/antivirus.json
+        policy: ./examples/json/antivirus.json
         
     - name: Print Results antivirus
       run: |
@@ -79,7 +79,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/file_blocking.json
+        policy: ./examples/json/file_blocking.json
         
     - name: Print Results file blocking
       run: |
@@ -92,7 +92,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/nat.json
+        policy: ./examples/json/nat.json
         
     - name: Print Results nat
       run: |
@@ -105,7 +105,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/sec_policy.json
+        policy: ./examples/json/sec_policy.json
         
     - name: Print Results sec_ex
       run: |
@@ -118,7 +118,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/services.json
+        policy: ./examples/json/services.json
         
     - name: Print Results services
       run: |
@@ -131,7 +131,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/vulnerability.json
+        policy: ./examples/json/vulnerability.json
       
     - name: Print Results vulnerability
       run: |
@@ -144,7 +144,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./files/json/wildfire.json
+        policy: ./examples/json/wildfire.json
     
     - name: Print Results wildfire
       run: |

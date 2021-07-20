@@ -73,8 +73,27 @@ Below is an example of a YAML file to create Tags.
   device_group: AWS
   color: color8
 ```
-2. **(recommended)** Add **"opa.yml"**, **"terraform.yml"**, and **"validate.yml"** to .github/workflows with changes to file paths in opa.yml and validate.yml depending on the repo.
-* **opa.yml**
+2. **(recommended)** Add **tlint.yml**, **"opa.yml"**, and **"validate.yml"** to .github/workflows with changes to file paths in opa.yml and validate.yml depending on the repo.
+* **tlint.yml** : checks to see if the Terraform has errors (like illegal instance types) for Major Cloud providers (AWS/Azure/GCP), warns about deprecated syntax, unused declarations, and enforces best practices, naming conventions.
+```yaml
+name: terraform-lint
+
+on: [push, pull_request]
+
+jobs:
+  delivery:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@main
+    - name: Lint Terraform
+      uses: actionshub/terraform-lint@main
+
+```
+
+* **opa.yml** : checks JSON for duplicate names.
 ```yaml
 name: Check for JSON duplicates
 on: [push]
@@ -92,7 +111,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/tags.json #path to tags file
+        policy: ./examples/examples/json/tags.json #path to tags file
         
     - name: Print Results tags
       run: |
@@ -105,7 +124,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/addr_obj.json #path to address objects file
+        policy: ./examples/examples/json/addr_obj.json #path to address objects file
         
     - name: Print Results addr_obj
       run: |
@@ -118,7 +137,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/addr_group.json #path to address groups file
+        policy: ./examples/examples/json/addr_group.json #path to address groups file
 
     - name: Print Results addr_group
       run: |
@@ -131,7 +150,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/nat.json #path to nat security policy file
+        policy: ./examples/examples/json/nat.json #path to nat security policy file
         
     - name: Print Results nat
       run: |
@@ -144,7 +163,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/sec_policy.json #path to security policy file
+        policy: ./examples/examples/json/sec_policy.json #path to security policy file
         
     - name: Print Results sec_ex
       run: |
@@ -157,7 +176,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/services.json #path to services file
+        policy: ./examples/examples/json/services.json #path to services file
         
     - name: Print Results services
       run: |
@@ -165,7 +184,7 @@ jobs:
       env:
        opa_results: ${{ steps.opa_eval_service.outputs.opa_results }}
 ```
-* **validate.yml**
+* **validate.yml** : checks to see if JSON validates against the provided schemas (located in the validate folder).
 ```yaml
 name: Validate JSONs
 
@@ -181,37 +200,37 @@ jobs:
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/tags_schema.json
-          jsons: ./examples/files/json/tags.json #path to tags file
+          jsons: ./examples/examples/json/tags.json #path to tags file
           
       - name: Validate address objects JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/addr_obj_schema.json
-          jsons: ./examples/files/json/addr_obj.json #path to address objects file
+          jsons: ./examples/examples/json/addr_obj.json #path to address objects file
 
       - name: Validate address group JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/addr_group_schema.json
-          jsons: ./examples/files/json/addr_group.json #path to address groups file
+          jsons: ./examples/examples/json/addr_group.json #path to address groups file
 
       - name: Validate nat JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/NAT_schema.json
-          jsons: ./examples/files/json/nat.json #path to NAT policy file
+          jsons: ./examples/examples/json/nat.json #path to NAT policy file
 
       - name: Validate security policy JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/sec_policy_schema.json
-          jsons: ./examples/files/json/sec_policy.json #path to security policy file
+          jsons: ./examples/examples/json/sec_policy.json #path to security policy file
 
       - name: Validate services JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/services_schema.json
-          jsons: ./examples/files/json/services.json #path to services file
+          jsons: ./examples/examples/json/services.json #path to services file
 ```
 
 3. Create a **"main.tf"** with the panos provider and security profile module blocks.
@@ -224,10 +243,10 @@ provider "panos" {
 
 module "policy" {
   source = "sarah-blazic/policy/panos"
-  version = "0.1.0"
+  version = "0.1.1"
 
-  #for JSON files: try(jsondecode(file("<*.json>")), {})
-  #for YAML files: try(yamldecode(file("<*.yaml>")), {})
+  #for JSON examples: try(jsondecode(file("<*.json>")), {})
+  #for YAML examples: try(yamldecode(file("<*.yaml>")), {})
   tags_file       = try(...decode(file("<tags JSON/YAML>")), {}) # eg. "tags.json"
   services_file   = try(...decode(file("<services JSON/YAML>")), {})
   addr_group_file = try(...decode(file("<address groups JSON/YAML>")), {})
@@ -237,19 +256,9 @@ module "policy" {
 }
 ```
 
+4. Make a PR against the Repo.
 
-4. Run Terraform
-```
-terraform init
-terraform apply
-terraform output -json
-```
-
-Cleanup
----
-```
-terraform destroy
-```
+5. Approve/Deny based on if it passed all of the tests.
 
 Inputs
 ---
