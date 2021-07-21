@@ -1,7 +1,7 @@
 provider "panos" {
-  hostname = "<panos_address>"
-  username = "<admin_username>"
-  password = "<admin_password>"
+  hostname = var.hostname
+  username = var.user
+  password = var.password
 }
 
 module "policy" {
