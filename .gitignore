@@ -8,7 +8,7 @@
 .boto
 .cache
 *.code-workspace
-#  may contain gcloud files
+#  may contain gcloud examples
 .config
 .gitconfig
 .local
@@ -19,7 +19,7 @@
 # .ssh dir may contain private keys
 .ssh
 .terrascan
-# Terraform dot files
+# Terraform dot examples
 .terraform
 .terraform.lock.hcl
 .terraformrc
@@ -32,7 +32,7 @@
 
 # Palo auth codes
 authcodes
-# Crash log files
+# Crash log examples
 crash.log
 credentials.json
 # Palo specific
@@ -47,5 +47,5 @@ terraform.tfvars.json
 *.auto.tfvars.json
 
 #provider
-provider.tf
+examples/provider.tf
 

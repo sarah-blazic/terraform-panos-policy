@@ -1,5 +1,5 @@
 locals {
-  #for yaml files change jsondecode => yamldecode
+  #for yaml examples change jsondecode => yamldecode
   target = var.nat_file != "optional" ? flatten([for item in var.nat_file :
     { for policy in item.rules : "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}"
   => policy if can(policy.target) }]) : [{}]

@@ -12,64 +12,34 @@ jobs:
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/tags_schema.json
-          jsons: ./files/json/tags.json
-          
+          jsons: ./examples/files/json/tags.json #path to tags file
+
       - name: Validate address objects JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/addr_obj_schema.json
-          jsons: ./files/json/addr_obj.json
+          jsons: ./examples/files/json/addr_obj.json #path to address objects file
 
       - name: Validate address group JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/addr_group_schema.json
-          jsons: ./files/json/addr_group.json
-          
-      - name: Validate anti spyware JSON
-        uses: nhalstead/validate-json-action@0.1.3
-        with:
-          schema: ./validate/schemas/anti_spyware_schema.json
-          jsons: ./files/json/spyware.json
-          
-      - name: Validate antivirus JSON
-        uses: nhalstead/validate-json-action@0.1.3
-        with:
-          schema: ./validate/schemas/antivirus_schema.json
-          jsons: ./files/json/antivirus.json
-
-      - name: Validate file blocking JSON
-        uses: nhalstead/validate-json-action@0.1.3
-        with:
-          schema: ./validate/schemas/file_blocking_schema.json
-          jsons: ./files/json/file_blocking.json
+          jsons: ./examples/files/json/addr_group.json #path to address groups file
 
       - name: Validate nat JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/NAT_schema.json
-          jsons: ./files/json/nat.json
+          jsons: ./examples/files/json/nat.json #path to NAT policy file
 
       - name: Validate security policy JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/sec_policy_schema.json
-          jsons: ./files/json/sec_policy.json
+          jsons: ./examples/files/json/sec_policy.json #path to security policy file
 
       - name: Validate services JSON
         uses: nhalstead/validate-json-action@0.1.3
         with:
           schema: ./validate/schemas/services_schema.json
-          jsons: ./files/json/services.json
-
-      - name: Validate vulnerability JSON
-        uses: nhalstead/validate-json-action@0.1.3
-        with:
-          schema: ./validate/schemas/vulnerability_schema.json
-          jsons: ./files/json/vulnerability.json
-
-      - name: Validate wildfire analysis JSON
-        uses: nhalstead/validate-json-action@0.1.3
-        with:
-          schema: ./validate/schemas/wildfire_schema.json
-          jsons: ./files/json/wildfire.json
+          jsons: ./examples/files/json/services.json #path to services file

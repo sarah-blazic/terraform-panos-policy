@@ -73,8 +73,27 @@ Below is an example of a YAML file to create Tags.
   device_group: AWS
   color: color8
 ```
-2. **(recommended)** Add **"opa.yml"**, **"terraform.yml"**, and **"validate.yml"** to .github/workflows with changes to file paths in opa.yml and validate.yml depending on the repo.
-* **opa.yml**
+2. **(recommended)** Add **tlint.yml**, **"opa.yml"**, and **"validate.yml"** to .github/workflows with changes to file paths in opa.yml and validate.yml depending on the repo.
+* **tlint.yml** : checks to see if the Terraform has errors (like illegal instance types) for Major Cloud providers (AWS/Azure/GCP), warns about deprecated syntax, unused declarations, and enforces best practices, naming conventions.
+```yaml
+name: terraform-lint
+
+on: [push, pull_request]
+
+jobs:
+  delivery:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@main
+    - name: Lint Terraform
+      uses: actionshub/terraform-lint@main
+
+```
+
+* **opa.yml** : checks JSON for duplicate names.
 ```yaml
 name: Check for JSON duplicates
 on: [push]
@@ -165,7 +184,7 @@ jobs:
       env:
        opa_results: ${{ steps.opa_eval_service.outputs.opa_results }}
 ```
-* **validate.yml**
+* **validate.yml** : checks to see if JSON validates against the provided schemas (located in the validate folder).
 ```yaml
 name: Validate JSONs
 
@@ -224,10 +243,10 @@ provider "panos" {
 
 module "policy" {
   source = "sarah-blazic/policy/panos"
-  version = "0.1.0"
+  version = "0.1.1"
 
-  #for JSON files: try(jsondecode(file("<*.json>")), {})
-  #for YAML files: try(yamldecode(file("<*.yaml>")), {})
+  #for JSON examples: try(jsondecode(file("<*.json>")), {})
+  #for YAML examples: try(yamldecode(file("<*.yaml>")), {})
   tags_file       = try(...decode(file("<tags JSON/YAML>")), {}) # eg. "tags.json"
   services_file   = try(...decode(file("<services JSON/YAML>")), {})
   addr_group_file = try(...decode(file("<address groups JSON/YAML>")), {})
@@ -237,19 +256,9 @@ module "policy" {
 }
 ```
 
+4. Make a PR against the Repo.
 
-4. Run Terraform
-```
-terraform init
-terraform apply
-terraform output -json
-```
-
-Cleanup
----
-```
-terraform destroy
-```
+5. Approve/Deny based on if it passed all of the tests.
 
 Inputs
 ---
