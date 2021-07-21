@@ -258,7 +258,7 @@ module "policy" {
 
 4. Make a PR against the Repository.
 
-5. Approve/Deny based on if it passed all the tests.
+5. Approve/Deny based on if the policy passed all the tests.
 
 Inputs
 ---
