@@ -8,7 +8,7 @@ output "created_tags" {
 #services
 output "created_services" {
   description = "Shows the services that were created."
-  value       = var.services_file != "optional" ? { for service in var.services_file : service.name => service } : tomap({})
+  value       = var.services_file != "optional" ? { for service in var.services_file : service.name => service } : {}
 }
 
 
