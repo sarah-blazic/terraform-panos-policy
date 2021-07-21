@@ -243,7 +243,7 @@ provider "panos" {
 
 module "policy" {
   source = "sarah-blazic/policy/panos"
-  version = "0.1.0"
+  version = "0.1.1"
 
   #for JSON examples: try(jsondecode(file("<*.json>")), {})
   #for YAML examples: try(yamldecode(file("<*.yaml>")), {})
@@ -255,6 +255,7 @@ module "policy" {
   nat_file        = try(...decode(file("<NAT policies JSON/YAML>")), {})
 }
 ```
+
 
 4. Run Terraform
 ```
