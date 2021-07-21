@@ -70,8 +70,7 @@
         "hip_profiles": ["any"],
         "services": ["service1","service7","service8"],
         "source_users": ["any"],
-        "source_zones": ["trust"],
-        "tags": ["pa_updates","cloudflare"]
+        "source_zones": ["trust"]
       },
       {
         "name": "rule6",
@@ -109,8 +108,7 @@
         "hip_profiles": ["any"],
         "services": ["service2"],
         "source_users": ["any"],
-        "source_zones": ["trust"],
-        "tags": ["untrust"]
+        "source_zones": ["trust"]
       },
       {
         "name": "rule9",
