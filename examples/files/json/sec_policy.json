@@ -10,11 +10,7 @@
         "destination_zones": ["dmz"],
         "applications": ["ssl", "hotmail"],
         "services": ["application-default"],
-        "categories": ["adult"],
-        "target": [
-          {"serial": "1234567890"},
-          {"serial": "1234567899"}
-        ]
+        "categories": ["adult"]
       },
       {
         "name": "rule2",
@@ -70,8 +66,7 @@
         "hip_profiles": ["any"],
         "services": ["service1","service7","service8"],
         "source_users": ["any"],
-        "source_zones": ["trust"],
-        "tags": ["pa_updates","cloudflare"]
+        "source_zones": ["trust"]
       },
       {
         "name": "rule6",
@@ -109,8 +104,7 @@
         "hip_profiles": ["any"],
         "services": ["service2"],
         "source_users": ["any"],
-        "source_zones": ["trust"],
-        "tags": ["untrust"]
+        "source_zones": ["trust"]
       },
       {
         "name": "rule9",

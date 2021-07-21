@@ -256,9 +256,18 @@ module "policy" {
 }
 ```
 
-4. Make a PR against the Repository.
+4. Run Terraform
+```
+terraform init
+terraform apply
+terraform output -json
+```
 
-5. Approve/Deny based on if it passed all the tests.
+Cleanup
+---
+```
+terraform destroy
+```
 
 Inputs
 ---
