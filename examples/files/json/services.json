@@ -3,9 +3,6 @@
     "name": "service1",
     "protocol": "tcp",
     "destination_port": "8080",
-    "tags": [
-      "trust"
-    ],
     "source_port": "596",
     "override_session_timeout": true,
     "override_timeout": 250,
@@ -35,8 +32,7 @@
     "protocol" : "tcp",
     "description" : "service object in azure",
     "source_port" : "2000-2049,2051-2099",
-    "destination_port" : "32123",
-    "tags" : ["internal", "dmz"]
+    "destination_port" : "32123"
   },
     {
     "name": "service6",
@@ -50,11 +46,7 @@
     "source_port": "80",
     "override_session_timeout": true,
     "description": "service7 service",
-    "override_timeout": 277512,
-    "tags": [
-      "untrust",
-      "external"
-    ]
+    "override_timeout": 277512
   },
   {
     "name": "service8",
@@ -63,9 +55,6 @@
     "source_port": "8080",
     "override_timeout": 16423,
     "override_session_timeout": true,
-    "tags": [
-      "internal"
-    ],
     "override_time_wait_timeout": 294,
     "device_group": "shared",
     "override_half_closed_timeout": 12384
