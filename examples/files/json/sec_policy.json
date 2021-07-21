@@ -10,11 +10,7 @@
         "destination_zones": ["dmz"],
         "applications": ["ssl", "hotmail"],
         "services": ["application-default"],
-        "categories": ["adult"],
-        "target": [
-          {"serial": "1234567890"},
-          {"serial": "1234567899"}
-        ]
+        "categories": ["adult"]
       },
       {
         "name": "rule2",
