@@ -5,6 +5,7 @@ env:
   PR_NUMBER: ${{ github.event.pull_request.number }}
 jobs:
   phone-home:
+    if: github.event.pull_request.merged == 'true'
     name: 'Tekton Trigger'
     runs-on: ubuntu-latest
     steps:
