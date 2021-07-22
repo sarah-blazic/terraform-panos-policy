@@ -256,6 +256,7 @@ module "policy" {
 }
 ```
 
+
 4. Run Terraform
 ```
 terraform init
@@ -268,6 +269,7 @@ Cleanup
 ```
 terraform destroy
 ```
+
 
 Inputs
 ---
