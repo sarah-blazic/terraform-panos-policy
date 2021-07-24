@@ -130,6 +130,15 @@
         "services": ["application-default"],
         "categories": ["any"],
         "negate_source": true
+      },
+      {
+        "name": "Sarahs",
+        "source_zones": ["untrust"],
+        "source_users": ["any"],
+        "destination_zones": ["untrust"],
+        "applications": ["any"],
+        "services": ["application-default"],
+        "categories": ["any"]
       }
     ]
   }
