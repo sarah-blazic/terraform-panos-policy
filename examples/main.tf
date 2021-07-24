@@ -8,6 +8,8 @@ module "policy" {
   source  = "sarah-blazic/policy/panos"
   version = "0.1.2"
 
+  #for JSON files: try(jsondecode(file("<*.json>")), {})
+  #for YAML files: try(yamldecode(file("<*.yaml>")), {})
   tags_file       = try(jsondecode(file("./files/json/tags.json")), {})
   services_file   = try(jsondecode(file("./files/json/services.json")), {})
   addr_group_file = try(jsondecode(file("./files/json/addr_group.json")), {})
