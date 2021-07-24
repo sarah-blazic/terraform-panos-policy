@@ -2,7 +2,7 @@
   {
     "rules": [
       {
-        "name": "Sarah's Rule",
+        "name": "rule1",
         "type": "interzone",
         "action": "deny",
         "source_zones": ["untrust"],
