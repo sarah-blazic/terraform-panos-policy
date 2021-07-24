@@ -133,7 +133,7 @@
       },
       {
         "name": "Sarahs",
-        "source_zones": ["trust"],
+        "source_zones": ["untrust"],
         "source_users": ["any"],
         "destination_zones": ["untrust"],
         "applications": ["any"],
