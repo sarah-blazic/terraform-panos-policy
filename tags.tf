@@ -1,5 +1,5 @@
 resource "panos_panorama_administrative_tag" "this" {
-  for_each = var.tags_file != "optional" ? { for tag in var.tags_file : tag.name => tag } : {}
+  for_each = var.tags != "optional" ? { for tag in var.tags : tag.name => tag } : {}
 
   name         = each.key
   color        = try(each.value.color, null)
