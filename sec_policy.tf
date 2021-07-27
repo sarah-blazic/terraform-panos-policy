@@ -1,7 +1,7 @@
 resource "panos_panorama_security_rule_group" "this" {
   depends_on = [panos_panorama_administrative_tag.this, panos_panorama_service_object.this]
 
-  for_each = var.sec_file != "optional" ? { for item in var.sec_file :
+  for_each = var.sec_policy != "optional" ? { for item in var.sec_policy :
     "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
   => item } : tomap({})
 

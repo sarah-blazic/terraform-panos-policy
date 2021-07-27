@@ -1,6 +1,6 @@
 locals {
   #for yaml examples change jsondecode => yamldecode
-  target = var.nat_file != "optional" ? flatten([for item in var.nat_file :
+  target = var.nat_policy != "optional" ? flatten([for item in var.nat_policy :
     { for policy in item.rules : "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}"
   => policy if can(policy.target) }]) : [{}]
 
@@ -112,7 +112,7 @@ resource "panos_panorama_nat_rule" "target" {
 resource "panos_panorama_nat_rule_group" "this" {
   depends_on = [panos_panorama_administrative_tag.this, panos_panorama_service_object.this]
 
-  for_each = var.nat_file != "optional" ? { for item in var.nat_file :
+  for_each = var.nat_policy != "optional" ? { for item in var.nat_policy :
     "${try(item.device_group, "shared")}_${try(item.rulebase, "pre-rulebase")}_${try(item.position_keyword, "")}_${try(item.position_reference, "")}"
   => item } : tomap({})
 

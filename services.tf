@@ -1,5 +1,5 @@
 resource "panos_panorama_service_object" "this" {
-  for_each = var.services_file != "optional" ? { for obj in var.services_file : obj.name => obj } : {}
+  for_each = var.services != "optional" ? { for obj in var.services : obj.name => obj } : {}
 
   destination_port             = each.value.destination_port
   name                         = each.key

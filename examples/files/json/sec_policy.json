@@ -119,7 +119,6 @@
     ]
   },
   {
-    "rulebase": "post-rulebase",
     "rules": [
       {
         "name": "rule10",
