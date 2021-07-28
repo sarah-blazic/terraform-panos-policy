@@ -1,0 +1,15 @@
+[
+  {
+    "rules": [
+      {
+        "name": "allow dns from trust",
+        "type": "intrazone",
+        "action": "allow",
+        "source_zones": ["trust"],
+        "source_addresses": ["10.0.0.0/8"],
+        "destination_zones": ["dmz"],
+        "applications": ["dns"]
+      }
+    ]
+  }
+]
