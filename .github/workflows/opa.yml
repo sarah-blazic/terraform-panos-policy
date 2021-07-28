@@ -14,7 +14,7 @@ jobs:
       uses: migara/test-action@master
       with:
         tests: ./validate/opa/panos.rego
-        policy: ./examples/files/json/tags.json,./examples/files/json/iron_skillet/tags.json #path to tags file
+        policy: ./examples/files/json/tags.json #path to tags file
 
     - name: Print Results tags
       run: |
