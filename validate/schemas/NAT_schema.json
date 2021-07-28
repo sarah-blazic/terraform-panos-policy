@@ -313,12 +313,12 @@
     "naming": {
       "type": "string",
       "maxLength": 31,
-      "pattern": "^[a-zA-Z0-9_.\\s\\/-]+$"
+      "pattern": "^[a-zA-Z0-9_\\.\\s\\/-]+$"
     },
     "naming_long": {
       "type": "string",
       "maxLength": 63,
-      "pattern": "^[a-zA-Z0-9_\\s\\/-]+$"
+      "pattern": "^[a-zA-Z0-9_\\.\\s\\/-]+$"
     },
     "trans_inter_req": {
       "anyOf": [
