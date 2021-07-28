@@ -2,43 +2,6 @@ Palo Alto Networks Panorama Policy Module for Policy as Code
 ---
 This Terraform module allows users to configure policies (NAT and Security Policies) along with tags, address objects, address groups, and services with Palo Alto Networks **PAN-OS** based PA-Series devices.
 
-Feature
----
-This module supports the following:
-* Create, update, and delete policies based on a JSON/YAML document.
-
-What is Policy as Code?
----
-Policy as Code is a way to configure Palo Alto Networks’ Next Generation Firewalls and Panoramas without needing to use the GUI.
-
-![PolicyAsCode](https://i.imgur.com/hSWGYuL.png)
-
-* Policy as Code executes Terraform that will create a variety of resources based on the file input. 
-* Terraform is the underlying automation tool, therefore it utilizes the Terraform provider ecosystem to drive relevant change to the network infrastructure.
-* All Policy as Code is written as a compatible **Terraform module** using resources for the underlying network infrastructure provider.
-
-Requirements
----
-* Terraform 0.13+
-
-Providers
----
-Name | Version
------|------
-panos | 1.8.3
-
-Compatibility
----
-This module is meant for use with **PAN-OS >= 8.0** and **Terraform >= 0.13**
-
-Permissions
----
-* In order for the module to work as expected, the hostname, username, and password to the **panos** Terraform provider.
-
-Caveats
----
-* Tags, address objects, address groups, and services can be associated to one or more polices on a PAN-OS device. Once any tags, address objects, address groups, or/and services are associated to a policy, it can only be deleted if there are no policies associated with any of those resources. If the users tries to delete any of those resources that are associated with any policy, they will encounter an error. This is a behavior on a PAN-OS device. This module creates, updates and deletes polices with Terraform. If a security profile, tag, address object, address group, and/or service associated to a security policy is deleted from the panorama, the module will throw an error when trying to create the profile. This is the correct and expected behavior as the resource is being used in a policy.
-
 Usage
 ---
 1. Create a JSON/YAML file to config one or more of the following: tags, address objects, address groups, services, nat rules, and security policy. Please note that the file(s) must adhere to its respective schema.
@@ -271,6 +234,27 @@ terraform destroy
 ```
 
 
+Requirements
+---
+* Terraform 0.13+
+
+Providers
+---
+Name | Version
+-----|------
+panos | 1.8.3
+
+Compatibility
+---
+This module is meant for use with **PAN-OS >= 8.0** and **Terraform >= 0.13**
+
+Permissions
+---
+* In order for the module to work as expected, the hostname, username, and password to the **panos** Terraform provider.
+
+Caveats
+---
+* Tags, address objects, address groups, and services can be associated to one or more polices on a PAN-OS device. Once any tags, address objects, address groups, or/and services are associated to a policy, it can only be deleted if there are no policies associated with any of those resources. If the users tries to delete any of those resources that are associated with any policy, they will encounter an error. This is a behavior on a PAN-OS device. This module creates, updates and deletes polices with Terraform. If a security profile, tag, address object, address group, and/or service associated to a security policy is deleted from the panorama, the module will throw an error when trying to create the profile. This is the correct and expected behavior as the resource is being used in a policy.
 
 Inputs
 ---
