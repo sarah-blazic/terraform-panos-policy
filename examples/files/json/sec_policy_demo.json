@@ -16,6 +16,14 @@
         "source_addresses": ["192.168.10.0/24"],
         "destination_zones": ["untrust"],
         "applications": ["ssl", "web-browsing"]
+      },
+      {
+        "name": "bad rule",
+        "action": "allow",
+        "source_zones": ["trust"],
+        "source_addresses": ["10.0.0.0/8"],
+        "destination_zones": 123,
+        "applications": ["dns"]
       }
     ]
   }
